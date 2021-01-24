@@ -1,0 +1,21 @@
+.wrapper {
+    width: calc(100% - 200px);
+    margin: 0 auto;
+}
+form.dataInput {
+    display: flex;
+    flex-direction: column;
+}
+form.dataInput div {
+    margin: 10px 0;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+form.dataInput button {
+    padding: 5px;
+    align-self: start;
+}
+form.overlayConfirmation.hidden {
+    display: none;
+}
