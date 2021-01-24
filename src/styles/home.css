@@ -1,20 +1,60 @@
+main {
+    position: relative;
+}
 .wrapper {
     width: calc(100% - 200px);
     margin: 0 auto;
 }
-form.dataInput {
+form.dataInput,
+form.overlayConfirmation {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    height: 350px;
+    padding: 40px 50px;
 }
-form.dataInput div {
+form.dataInput div,
+form.overlayConfirmation div {
     margin: 10px 0;
     display: flex;
     gap: 10px;
     align-items: center;
 }
-form.dataInput button {
+form.dataInput div label:not(label[for="mmol"]):not(label[for="mg"]),
+form.overlayConfirmation p:first-child {
+    flex-basis: 180px;
+    font-weight: 700;
+}
+form.dataInput p, 
+form.dataInput label[for="mmol"], 
+form.dataInput label[for="mg"],
+form.overlayConfirmation p:last-child {
+    text-transform: none;
+}
+form.dataInput div input:not(input[type="radio"]) {
+    flex-basis: 300px;
+}
+form.dataInput div input {
+    height: 27px;
+}
+form.overlayConfirmation {
+    background-color: whitesmoke;
+    position: absolute;
+    top: 0;
+    left: 100px;
+    line-height: 27px;
+}
+form.overlayConfirmation div.buttonContainer {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+form button {
+    width: 120px;
     padding: 5px;
-    align-self: start;
+    margin-top: 30px;
+    align-self: center;
+    text-transform: capitalize;
 }
 form.overlayConfirmation.hidden {
     display: none;
