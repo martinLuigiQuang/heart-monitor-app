@@ -9,7 +9,6 @@ router.route('/:date').get(async (req, res) => {
 
 router.route('/').post(async (req, res) => {
     const { date, heartData } = req.body;
-    console.log(req.body);
     const newEntry = new test({
         date,
         heartData

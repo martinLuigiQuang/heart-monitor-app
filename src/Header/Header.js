@@ -2,16 +2,18 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { english, tiếng_việt } from '../Languages/languages.js';
 
-function Header(props) {
+export default function Header(props) {
     const [language, setLanguage] = useState(english);
 
     /**
      * Toggle the language on display
      * @param {Object} language The object that contains the text information in a particular language
+     * @returns void
      */
     function toggleLanguage(language) {
         props.language(language);
         setLanguage(language);
+        return;
     };
 
     return (
@@ -30,5 +32,3 @@ function Header(props) {
         </header>
     );
 };
-
-export default Header;

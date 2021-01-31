@@ -20,7 +20,9 @@ function App() {
         <Route exact path="/" render={() => {
           return ( <Home language={language} /> );
         }}/>
-        
+        <Route path="/dashboard" render={() => {
+          return ( <Dashboard language={language} /> );
+        }}/>
       </div>
     </Router>
   );
