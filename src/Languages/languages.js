@@ -24,4 +24,4 @@ export const tiếng_việt = {
     buttonSubmit: 'nhập',
     buttonCancel: 'hủy',
     buttonOK: 'đồng ý'
-}
+};

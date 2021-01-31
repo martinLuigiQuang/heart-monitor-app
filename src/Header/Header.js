@@ -20,7 +20,7 @@ function Header(props) {
             <nav>
                 <ul>
                     <li><Link to="/">{language.navHome}</Link></li>
-                    <li><Link to="/">{language.navDashboard}</Link></li>
+                    <li><Link to="/dashboard">{language.navDashboard}</Link></li>
                 </ul>
             </nav>
             <div className="languageButtons">
@@ -29,6 +29,6 @@ function Header(props) {
             </div>
         </header>
     );
-}
+};
 
 export default Header;
