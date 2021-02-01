@@ -1,64 +1,33 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import createPlotlyComponent from 'react-plotly.js/factory';
-const Plot = createPlotlyComponent(window.Plotly);
+import PressurePlots from './PressurePlots.js';
+import HeartRatePlot from './HeartRatePlot.js';
 
 export default function Dashboard(props) {
     const language = props.language;
     const [heartDatasets, setHeartDatasets] = useState([]);
+    const [plotWidth, setPlotWidth] = useState(window.innerWidth);
 
     useEffect(() => {
         axios.get('http://localhost:5000/2021')
-            .then(data => {
-                setHeartDatasets(data.data);
-            })
-            .catch(err => console.log(err));
+            .then( data => setHeartDatasets(data.data) )
+            .catch( err => console.log(err) );
+        function handleWindowResize() {
+            setPlotWidth(window.innerWidth);
+        };
+        window.onresize = handleWindowResize;
+        return function cleanup() {
+            window.removeEventListener('resize', handleWindowResize);
+            console.log('window resize event listener removed')
+        };
     }, []);
-
-    const systolicPressure = {
-        x: heartDatasets.filter(set => set.heartData.systolicPressure).map(set => new Date(set.date)),
-        y: heartDatasets.filter(set => set.heartData.systolicPressure).map(set => set.heartData.systolicPressure),
-        type: 'scatter',
-        mode: 'lines+markers',
-        marker: {color: 'red'},
-        name: language.systolic
-    };
-
-    const diastolicPressure = {
-        x: heartDatasets.filter(set => set.heartData.diastolicPressure).map(set => new Date(set.date)),
-        y: heartDatasets.filter(set => set.heartData.diastolicPressure).map(set => set.heartData.diastolicPressure),
-        yaxis: 'y2',
-        type: 'scatter',
-        mode: 'lines+markers',
-        marker: {color: 'blue'},
-        name: language.diastolic
-    };
-
-    const layout = {
-        width: 500,
-        height: 400,
-        yaxis: { 
-            title: language.systolic,
-            range: [85, 135] 
-        },
-        yaxis2: {
-            title: language.diastolic,
-            overlaying: 'y',
-            side: 'right',
-            range: [50, 100]
-        },
-        showlegend: false
-    };
     
     return (
-        heartDatasets
-        ?   <Plot
-                data={[
-                    systolicPressure,
-                    diastolicPressure
-                ]}
-                layout={ layout }
-            />
-        :   ''
+        <main>
+            <div className="bloodPressureData">
+                <PressurePlots data={heartDatasets} language={language} plotWidth={plotWidth} />
+                {/* <HeartRatePlot data={heartDatasets} language={language} plotWidth={plotWidth} /> */}
+            </div>
+        </main>
     );
 };
