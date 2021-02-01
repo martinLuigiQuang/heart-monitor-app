@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import PressurePlots from './PressurePlots.js';
-import HeartRatePlot from './HeartRatePlot.js';
 
 export default function Dashboard(props) {
     const language = props.language;
@@ -26,7 +25,6 @@ export default function Dashboard(props) {
         <main>
             <div className="bloodPressureData">
                 <PressurePlots data={heartDatasets} language={language} plotWidth={plotWidth} />
-                {/* <HeartRatePlot data={heartDatasets} language={language} plotWidth={plotWidth} /> */}
             </div>
         </main>
     );

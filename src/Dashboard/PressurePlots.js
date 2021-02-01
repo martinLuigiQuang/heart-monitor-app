@@ -25,6 +25,7 @@ export default function PressurePlots (props) {
         const heartRate = {
             x: props.data.filter(set => set.heartData.heartRate).map(set => new Date(set.date)),
             y: props.data.filter(set => set.heartData.heartRate).map(set => set.heartData.heartRate),
+            yaxis: 'y3',
             type: 'bar',
             color: 'green',
             name: props.language.heartRate
