@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import PressurePlots from './PressurePlots.js';
+import HeartDataPlots from './HeartDataPlots.js';
 
 export default function Dashboard(props) {
     const language = props.language;
@@ -17,15 +17,21 @@ export default function Dashboard(props) {
         window.onresize = handleWindowResize;
         return function cleanup() {
             window.removeEventListener('resize', handleWindowResize);
-            console.log('window resize event listener removed')
         };
     }, []);
+
+    function handleClick(event) {
+        console.log(event.target)
+    };
     
     return (
-        <main>
-            <div className="bloodPressureData">
-                <PressurePlots data={heartDatasets} language={language} plotWidth={plotWidth} />
-            </div>
+        <main onClick={(event) => handleClick(event)}>
+            <HeartDataPlots 
+                data={heartDatasets} 
+                language={language} 
+                plotWidth={plotWidth} 
+                
+            />
         </main>
     );
 };

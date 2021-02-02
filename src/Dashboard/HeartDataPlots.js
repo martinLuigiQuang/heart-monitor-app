@@ -1,7 +1,7 @@
 import createPlotlyComponent from 'react-plotly.js/factory';
 const Plot = createPlotlyComponent(window.Plotly);
 
-export default function PressurePlots (props) {
+export default function HeartDataPlots (props) {
     if (props.data && props.language && props.plotWidth) {
         const systolicPressure = {
             x: props.data.filter(set => set.heartData.systolicPressure).map(set => new Date(set.date)),
@@ -37,8 +37,7 @@ export default function PressurePlots (props) {
             xaxis: {
                 showgrid: true,
                 zeroline: true,
-                showline: true,
-                showticklabels: false 
+                showline: true
             },
             yaxis: { 
                 title: props.language.systolic,
@@ -56,16 +55,21 @@ export default function PressurePlots (props) {
                 zeroline: true,
                 showline: true 
             },
-            yaxis3: { 
-                title: props.language.heartRate,
-                range: [50, 70],
+            yaxis3: {
+                range: [50, 100],
                 overlaying: 'y',
                 side: 'right',
                 showgrid: true,
                 zeroline: true,
                 showline: true,
+                showticklabels: false
             },
-            showlegend: false
+            showlegend: true,
+            legend: {
+                x: 1,
+                y: 1,
+                xanchor: 'right'
+            }
         };
 
         return (
@@ -73,7 +77,7 @@ export default function PressurePlots (props) {
                 data={[
                     systolicPressure,
                     diastolicPressure,
-                    heartRate
+                    heartRate,
                 ]}
                 layout={ layout }
             />
