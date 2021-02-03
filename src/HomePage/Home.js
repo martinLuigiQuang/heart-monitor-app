@@ -17,13 +17,13 @@ export default function Home(props) {
                 </div>
 
                 <div className="input--systolic">
-                    <label htmlFor="systolic">{language.systolic}:</label>
+                    <label htmlFor="systolic">{language.systolicPressure}:</label>
                     <input type="number" name="systolic" id="systolic" placeholder="110" onChange={(event) => handleInputChange(event, heartData, setHeartData, 1)}/>
                     <p>mmHg</p>
                 </div>
 
                 <div className="input--diastolic">
-                    <label htmlFor="diastolic">{language.diastolic}:</label>
+                    <label htmlFor="diastolic">{language.diastolicPressure}:</label>
                     <input type="number" name="diastolic" id="diastolic" placeholder="70" onChange={(event) => handleInputChange(event, heartData, setHeartData, 2)}/>
                     <p>mmHg</p>
                 </div>
@@ -61,13 +61,13 @@ export default function Home(props) {
                 </div>
 
                 <div className="confirm--systolic">
-                    <p>{language.systolic}:</p>
+                    <p>{language.systolicPressure}:</p>
                     <p>{systolicPressure}</p>
                     <p>mmHg</p>
                 </div>
 
                 <div className="confirm--diastolic">
-                    <p>{language.diastolic}:</p>
+                    <p>{language.diastolicPressure}:</p>
                     <p>{diastolicPressure}</p>
                     <p>mmHg</p>
                 </div>

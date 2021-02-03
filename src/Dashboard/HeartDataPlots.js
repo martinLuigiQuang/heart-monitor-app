@@ -9,7 +9,7 @@ export default function HeartDataPlots (props) {
             type: 'scatter',
             mode: 'lines+markers',
             marker: {color: 'red'},
-            name: props.language.systolic
+            name: props.language.systolicPressure
         };
     
         const diastolicPressure = {
@@ -19,7 +19,7 @@ export default function HeartDataPlots (props) {
             type: 'scatter',
             mode: 'lines+markers',
             marker: {color: 'blue'},
-            name: props.language.diastolic
+            name: props.language.diastolicPressure
         };
 
         const heartRate = {
@@ -28,6 +28,7 @@ export default function HeartDataPlots (props) {
             yaxis: 'y3',
             type: 'bar',
             color: 'green',
+            opacity: 0.7,
             name: props.language.heartRate
         };
     
@@ -40,28 +41,26 @@ export default function HeartDataPlots (props) {
                 showline: true
             },
             yaxis: { 
-                title: props.language.systolic,
-                range: [85, 135],
+                title: props.language.systolicPressure,
+                range: [40, 140],
                 showgrid: true,
                 zeroline: true,
                 showline: true,
             },
             yaxis2: {
-                title: props.language.diastolic,
+                title: props.language.diastolicPressure,
                 overlaying: 'y',
                 side: 'right',
-                range: [50, 100],
+                range: [20, 120],
                 showgrid: true,
                 zeroline: true,
                 showline: true 
             },
             yaxis3: {
-                range: [50, 100],
+                range: [0, 250],
                 overlaying: 'y',
                 side: 'right',
-                showgrid: true,
-                zeroline: true,
-                showline: true,
+                showgrid: false,
                 showticklabels: false
             },
             showlegend: true,
@@ -83,4 +82,5 @@ export default function HeartDataPlots (props) {
             />
         );
     };
+    return;
 };

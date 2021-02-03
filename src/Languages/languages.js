@@ -3,13 +3,16 @@ export const english = {
     navHome: 'home',
     navDashboard: 'dashboard',
     date: 'date',
-    systolic: 'systolic pressure',
-    diastolic: 'diastolic pressure',
+    systolicPressure: 'systolic pressure',
+    diastolicPressure: 'diastolic pressure',
     heartRate: 'heart rate',
     bloodSugarLevel: 'blood sugar level',
+    bloodSugarUnit: 'blood sugar level unit',
     buttonSubmit: 'submit',
     buttonCancel: 'cancel',
-    buttonOK: 'OK'
+    buttonOK: 'OK',
+    update: 'update',
+    delete: 'delete'
 };
 
 export const tiếng_việt = {
@@ -17,11 +20,14 @@ export const tiếng_việt = {
     navHome: 'trang chủ',
     navDashboard: 'bảng dữ liệu',
     date: 'ngày',
-    systolic: 'huyết áp tâm thu',
-    diastolic: 'huyết áp tâm trương',
+    systolicPressure: 'huyết áp tâm thu',
+    diastolicPressure: 'huyết áp tâm trương',
     heartRate: 'nhịp tim',
     bloodSugarLevel: 'đường huyết',
+    bloodSugarUnit: 'đơn vị đường huyết',
     buttonSubmit: 'nhập',
     buttonCancel: 'hủy',
-    buttonOK: 'đồng ý'
+    buttonOK: 'đồng ý',
+    update: 'sửa',
+    delete: 'xóa'
 };

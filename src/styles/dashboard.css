@@ -1,0 +1,58 @@
+div.bloodSugarUnit {
+    display: flex;
+    justify-content: flex-end;
+}
+div.bloodSugarUnit label {
+    text-transform: none;
+    padding-left: 5px;
+}
+div.bloodSugarUnit input[type="radio"] {
+    margin-left: 20px;
+}
+div.dataTable {
+    display: grid;
+    grid-template-columns: repeat(6, auto);
+}
+div.dataTable ul {
+    border-left: 1px solid black;
+}
+div.dataTable ul:last-child {
+    border-right: 1px solid black;
+}
+div.dataTable ul:nth-child(2n + 1) {
+    background-color: #7fffd480;
+}
+div.dataTable ul:last-child li {
+    text-transform: lowercase;
+}
+div.dataTable ul li {
+    display: flex;
+    justify-content: center;
+    height: 20px;
+    border-bottom: 1px solid black;
+}
+div.dataTable ul li:first-child {
+    border-top: 1px solid black;
+}
+div.dataTable ul li.headings {
+    background-color: #686868;
+    color: white;
+    font-weight: 700;
+}
+div.dataTable ul li a {
+    text-align: center;
+    text-transform: none;
+    flex: 1 0 0;
+}
+div.dataTable ul li span.date:first-child {
+    margin-right: 20px;
+}
+div.dataTable ul li span.value {
+    text-align: end;
+}
+span.bold {
+    font-weight: 500;
+}
+
+
+
