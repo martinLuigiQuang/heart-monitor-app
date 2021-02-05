@@ -12,7 +12,11 @@ export const english = {
     buttonCancel: 'cancel',
     buttonOK: 'OK',
     update: 'update',
-    delete: 'delete'
+    delete: 'delete',
+    showMore: 'show more',
+    showLess: 'show less',
+    deleteConfirmation: 'do you want to delete the data entry for',
+    timeAt: 'at'
 };
 
 export const tiếng_việt = {
@@ -29,5 +33,9 @@ export const tiếng_việt = {
     buttonCancel: 'hủy',
     buttonOK: 'đồng ý',
     update: 'sửa',
-    delete: 'xóa'
+    delete: 'xóa',
+    showMore: 'xem thêm',
+    showLess: 'thu lại',
+    deleteConfirmation: 'bạn có muốn xóa dữ liệu cho ngày',
+    timeAt: 'lúc'
 };

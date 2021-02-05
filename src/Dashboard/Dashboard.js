@@ -7,12 +7,15 @@ export default function Dashboard(props) {
     const language = props.language;
     const [heartDatasets, setHeartDatasets] = useState([]);
     const [plotWidth, setPlotWidth] = useState(window.innerWidth);
-    const [bloodSugarUnit, setBloodSugarUnit] = useState('mmol/L')
+    const [bloodSugarUnit, setBloodSugarUnit] = useState('mmol/L');
 
     useEffect(() => {
         axios.get('http://localhost:5000/2021')
             .then( data => updateBloodSugarLevel(data.data, bloodSugarUnit))
             .catch( err => console.log(err) );
+    }, [bloodSugarUnit]);
+
+    useEffect(() => {
         function handleWindowResize() {
             setPlotWidth(window.innerWidth);
         };
@@ -20,7 +23,7 @@ export default function Dashboard(props) {
         return function cleanup() {
             window.removeEventListener('resize', handleWindowResize);
         };
-    }, [bloodSugarUnit]);
+    }, []);
 
     function deleteEntry(id) {
         axios.delete(`http://localhost:5000/delete/${id}`)

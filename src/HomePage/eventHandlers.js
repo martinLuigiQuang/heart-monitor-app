@@ -21,9 +21,9 @@ export function verifyInput(setInputConfirmation) {
     const mongoDBDoc = {
         date: arguments[1],
         heartData: {
-            systolicPressure: arguments[2],
-            diastolicPressure: arguments[3],
-            heartRate: arguments[4],
+            systolicPressure: arguments[2] ? arguments[2] : null,
+            diastolicPressure: arguments[3] ? arguments[3] : null,
+            heartRate: arguments[4] ? arguments[4] : null,
             bloodSugar: arguments[5] ? arguments[5] : null,
             bloodSugarUnit: arguments[5] ? arguments[6] : null
         }

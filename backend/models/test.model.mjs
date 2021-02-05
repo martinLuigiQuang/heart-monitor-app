@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
-const testSchema = new Schema(
+const heartDataSchema = new Schema(
     {
         date: { type: String, required: true, unique: true },
         heartData: { type: Object, required: true }
@@ -12,5 +12,5 @@ const testSchema = new Schema(
     }
 );
 
-export const test = mongoose.model('test', testSchema);
+export const heartDataset = mongoose.model('heartDataset', heartDataSchema);
 

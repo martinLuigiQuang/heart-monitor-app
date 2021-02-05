@@ -46,9 +46,10 @@ div.dataTable ul li a {
 }
 div.dataTable ul li span.date:first-child {
     margin-right: 20px;
+    width: 82px;
 }
-div.dataTable ul li span.value {
-    text-align: end;
+div.dataTable ul li span.date:last-child {
+    width: 40px;
 }
 span.bold {
     font-weight: 500;
