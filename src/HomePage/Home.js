@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { getInput, verifyInput, handleUnitConversion, handleInputChange } from './eventHandlers.js';
 
-export default function Home(props) {
-    const language = props.language;
+export default function Home({ language }) {
     const [inputConfirmation, setInputConfirmation] = useState(false);
     const [heartData, setHeartData] = useState([new Date().toDateString(), 0, 0, 0, 0, 'mmol/L']);
     const [date, systolicPressure, diastolicPressure, heartRate, bloodSugar, bloodSugarUnit] = heartData;
@@ -18,7 +17,7 @@ export default function Home(props) {
 
                 <div className="input--systolic">
                     <label htmlFor="systolic">{ language.systolicPressure }:</label>
-                    <input type="number" min="0" max="180" name="systolic" id="systolic" placeholder="110" onChange={(event) => handleInputChange(event, heartData, setHeartData, 1)}/>
+                    <input type="number" min="0" max="180" name="systolic" id="systolic" placeholder="$110" onChange={(event) => handleInputChange(event, heartData, setHeartData, 1)}/>
                     <p>mmHg</p>
                 </div>
 

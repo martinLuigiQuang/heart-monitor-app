@@ -1,53 +1,53 @@
 import createPlotlyComponent from 'react-plotly.js/factory';
 const Plot = createPlotlyComponent(window.Plotly);
 
-export default function HeartDataPlots (props) {
+export default function HeartDataPlots ({ data, language, plotWidth }) {
     const systolicPressure = {
-        x: props.data.filter(set => set.heartData.systolicPressure).map(set => new Date(set.date)),
-        y: props.data.filter(set => set.heartData.systolicPressure).map(set => set.heartData.systolicPressure),
+        x: data.filter(set => set.heartData.systolicPressure).map(set => new Date(set.date)),
+        y: data.filter(set => set.heartData.systolicPressure).map(set => set.heartData.systolicPressure),
         type: 'scatter',
         mode: 'lines+markers',
         marker: {color: 'red'},
-        name: props.language.systolicPressure
+        name: language.systolicPressure
     };
 
     const diastolicPressure = {
-        x: props.data.filter(set => set.heartData.diastolicPressure).map(set => new Date(set.date)),
-        y: props.data.filter(set => set.heartData.diastolicPressure).map(set => set.heartData.diastolicPressure),
+        x: data.filter(set => set.heartData.diastolicPressure).map(set => new Date(set.date)),
+        y: data.filter(set => set.heartData.diastolicPressure).map(set => set.heartData.diastolicPressure),
         yaxis: 'y2',
         type: 'scatter',
         mode: 'lines+markers',
         marker: {color: 'blue'},
-        name: props.language.diastolicPressure
+        name: language.diastolicPressure
     };
 
     const heartRate = {
-        x: props.data.filter(set => set.heartData.heartRate).map(set => new Date(set.date)),
-        y: props.data.filter(set => set.heartData.heartRate).map(set => set.heartData.heartRate),
+        x: data.filter(set => set.heartData.heartRate).map(set => new Date(set.date)),
+        y: data.filter(set => set.heartData.heartRate).map(set => set.heartData.heartRate),
         yaxis: 'y3',
         type: 'scatter',
         mode: 'lines+markers',
         marker: {color: 'green'},
-        name: props.language.heartRate
+        name: language.heartRate
     };
 
     const layout = {
-        width: props.plotWidth,
-        height: props.plotWidth*0.62,
+        width: plotWidth,
+        height: plotWidth*0.62,
         xaxis: {
             showgrid: true,
             zeroline: true,
             showline: true
         },
         yaxis: { 
-            title: props.language.systolicPressure,
+            title: language.systolicPressure,
             range: [40, 140],
             showgrid: true,
             zeroline: true,
             showline: true,
         },
         yaxis2: {
-            title: props.language.diastolicPressure,
+            title: language.diastolicPressure,
             overlaying: 'y',
             side: 'right',
             range: [20, 120],

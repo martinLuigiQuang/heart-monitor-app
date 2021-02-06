@@ -46,7 +46,7 @@ div.dataTable ul li a {
 }
 div.dataTable ul li span.date:first-child {
     margin-right: 20px;
-    width: 82px;
+    width: 100px;
 }
 div.dataTable ul li span.date:last-child {
     width: 40px;

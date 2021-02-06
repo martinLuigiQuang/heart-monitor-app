@@ -1,12 +1,11 @@
 import { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-export default function DataTable (props) {
+export default function DataTable ({ data, language, deleteEntry }) {
     const [ numOfEntries, setNumOfEntries ] = useState(10);
     const [ entryToBeDeleted, setEntryToBeDeleted ] = useState(null);
     const [ idToBeDeleted, setIdToBeDeleted ] = useState(null);
     const [ deleteConfirmation, setDeleteConfirmation ] = useState(false);
-    const language = props.language;
     const heartDataEntries = ['date', 'systolicPressure', 'diastolicPressure', 'heartRate', 'bloodSugarLevel', ''];
 
     function addDecimalPlace(value) {
@@ -30,7 +29,7 @@ export default function DataTable (props) {
                         setDeleteConfirmation(false);
                         setEntryToBeDeleted(null);
                         setIdToBeDeleted(null);
-                        props.delete(id);
+                        deleteEntry(id);
                     }}>
                         { 
                             language.buttonOK 
@@ -89,13 +88,13 @@ export default function DataTable (props) {
                         <ul className="dataEntry" key={entry ? entry : "controlPanel"}>
                             <li className="headings">{ entry ? language[entry] : null }</li>
                             {
-                                renderDataEntries(props.data, entry, numOfEntries)
+                                renderDataEntries(data, entry, numOfEntries)
                             }
                         </ul>
                     );
                 })
             }
-            <button onClick={() => handleShowmore(props.data)} disabled={props.data.length <= 10}>
+            <button onClick={() => handleShowmore(data)} disabled={data.length <= 10}>
                 { 
                     numOfEntries <= 10
                     ?   language.showMore

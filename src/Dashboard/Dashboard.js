@@ -3,8 +3,7 @@ import axios from 'axios';
 import DataTable from './DataTable.js';
 import HeartDataPlots from './HeartDataPlots.js';
 
-export default function Dashboard(props) {
-    const language = props.language;
+export default function Dashboard({ language }) {
     const [heartDatasets, setHeartDatasets] = useState([]);
     const [plotWidth, setPlotWidth] = useState(window.innerWidth);
     const [bloodSugarUnit, setBloodSugarUnit] = useState('mmol/L');
@@ -63,7 +62,7 @@ export default function Dashboard(props) {
             <DataTable
                 data={heartDatasets}
                 language={language}
-                delete={(id) => deleteEntry(id)}
+                deleteEntry={(id) => deleteEntry(id)}
             />
             <HeartDataPlots 
                 data={heartDatasets} 
