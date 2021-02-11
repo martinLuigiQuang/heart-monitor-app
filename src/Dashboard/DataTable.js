@@ -9,7 +9,7 @@ export default function DataTable ({ data, language, deleteEntry }) {
     const heartDataEntries = ['date', 'systolicPressure', 'diastolicPressure', 'heartRate', 'bloodSugarLevel', ''];
 
     function addDecimalPlace(value) {
-        return value * 10 % 10 === 0 ? value + '.0' : value;
+        return (value * 10) % 10 === 0 ? value + '.0' : value;
     };
 
     function handleShowmore(datasets) {

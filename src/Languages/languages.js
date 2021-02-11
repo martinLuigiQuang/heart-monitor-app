@@ -15,7 +15,7 @@ export const english = {
     delete: 'delete',
     showMore: 'show more',
     showLess: 'show less',
-    deleteConfirmation: 'do you want to delete the data entry for',
+    deleteConfirmation: 'Do you want to delete the data entry for',
     timeAt: 'at'
 };
 
@@ -36,6 +36,6 @@ export const tiếng_việt = {
     delete: 'xóa',
     showMore: 'xem thêm',
     showLess: 'thu lại',
-    deleteConfirmation: 'bạn có muốn xóa dữ liệu cho ngày',
+    deleteConfirmation: 'Bạn có muốn xóa dữ liệu cho ngày',
     timeAt: 'lúc'
 };

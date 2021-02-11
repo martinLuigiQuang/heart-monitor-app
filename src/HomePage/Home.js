@@ -17,7 +17,7 @@ export default function Home({ language }) {
 
                 <div className="input--systolic">
                     <label htmlFor="systolic">{ language.systolicPressure }:</label>
-                    <input type="number" min="0" max="180" name="systolic" id="systolic" placeholder="$110" onChange={(event) => handleInputChange(event, heartData, setHeartData, 1)}/>
+                    <input type="number" min="0" max="180" name="systolic" id="systolic" placeholder="110" onChange={(event) => handleInputChange(event, heartData, setHeartData, 1)}/>
                     <p>mmHg</p>
                 </div>
 

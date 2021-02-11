@@ -10,9 +10,9 @@ export default function Dashboard({ language }) {
 
     useEffect(() => {
         axios.get('http://localhost:5000/2021')
-            .then( data => updateBloodSugarLevel(data.data, bloodSugarUnit))
+            .then(data => updateBloodSugarLevel(data.data, 'mmol/L'))
             .catch( err => console.log(err) );
-    }, [bloodSugarUnit]);
+    }, []);
 
     useEffect(() => {
         function handleWindowResize() {
@@ -37,7 +37,7 @@ export default function Dashboard({ language }) {
 
     function updateBloodSugarLevel(datasets, newUnit) {
         const checkedData = datasets.map(set => {
-            if (set.heartData.bloodSugarUnit !== newUnit) {
+            if (set.heartData.bloodSugarUnit && set.heartData.bloodSugarUnit !== newUnit) {
                 set.heartData.bloodSugarUnit = newUnit;
                 newUnit === 'mmol/L'
                 ?   set.heartData.bloodSugar = Math.ceil(set.heartData.bloodSugar * 10 / 18) / 10

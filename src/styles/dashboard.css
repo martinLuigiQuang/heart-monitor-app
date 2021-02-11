@@ -54,6 +54,14 @@ div.dataTable ul li span.date:last-child {
 span.bold {
     font-weight: 500;
 }
+div.dataTable form.overlayConfirmation {
+    position: fixed;
+    top: 100px;
+    left: 100px;
+}
+div.dataTable form.overlayConfirmation h3 {
+    text-transform: none;
+}
 
 
 
