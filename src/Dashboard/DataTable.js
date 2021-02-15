@@ -1,11 +1,12 @@
 import { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-export default function DataTable ({ data, language, deleteEntry }) {
+export default function DataTable ({ data, language, deleteEntry, updateEntry }) {
     const [ numOfEntries, setNumOfEntries ] = useState(10);
     const [ entryToBeDeleted, setEntryToBeDeleted ] = useState(null);
     const [ idToBeDeleted, setIdToBeDeleted ] = useState(null);
     const [ deleteConfirmation, setDeleteConfirmation ] = useState(false);
+    const [ updatedId, setUpdatedId ] = useState(false);
     const heartDataEntries = ['date', 'systolicPressure', 'diastolicPressure', 'heartRate', 'bloodSugarLevel', ''];
 
     function addDecimalPlace(value) {
@@ -61,15 +62,18 @@ export default function DataTable ({ data, language, deleteEntry }) {
                                         ?   set.heartData[entry]
                                         :   '-'
                                 :   <Fragment>
-                                        <Link to="/dashboard">{ language.update }</Link> | 
-                                        <Link to="/dashboard" onClick={(event) => {
+                                        <Link to="/dashboard" onClick={() => {
+                                            setUpdatedId(set._id);
+                                            updateEntry(set._id, '2021-02-14T05:40', 10, 0, 0, 0, 'mmol/L');
+                                        }}>
+                                            { language.update }
+                                        </Link> | 
+                                        <Link to="/dashboard" onClick={event => {
                                             setEntryToBeDeleted(event);
                                             setIdToBeDeleted(set._id);
                                             setDeleteConfirmation(true);
                                         }}>
-                                            { 
-                                                language.delete 
-                                            }
+                                            { language.delete }
                                         </Link>
                                     </Fragment>
                             }

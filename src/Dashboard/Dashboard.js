@@ -9,16 +9,18 @@ export default function Dashboard({ language }) {
     const [bloodSugarUnit, setBloodSugarUnit] = useState('mmol/L');
 
     useEffect(() => {
+        // get data from database
         axios.get('http://localhost:5000/2021')
             .then(data => updateBloodSugarLevel(data.data, 'mmol/L'))
             .catch( err => console.log(err) );
-    }, []);
-
-    useEffect(() => {
+        
+        // set width of data plot based on the window inner width
         function handleWindowResize() {
             setPlotWidth(window.innerWidth);
         };
         window.onresize = handleWindowResize;
+
+        // remove event listener when component unmounts
         return function cleanup() {
             window.removeEventListener('resize', handleWindowResize);
         };
@@ -27,6 +29,24 @@ export default function Dashboard({ language }) {
     function deleteEntry(id) {
         axios.delete(`http://localhost:5000/delete/${id}`)
             .then(data => setHeartDatasets(heartDatasets.filter(set => set._id !== data.data._id)))
+            .catch(err => console.log(err));
+    };
+
+    function updateEntry(id) {
+        const updatedDoc = {
+            date: arguments[1],
+            heartData: {
+                systolicPressure: arguments[2] ? arguments[2] : null,
+                diastolicPressure: arguments[3] ? arguments[3] : null,
+                heartRate: arguments[4] ? arguments[4] : null,
+                bloodSugar: arguments[5] ? arguments[5] : null,
+                bloodSugarUnit: arguments[5] ? arguments[6] : null
+            }
+        };
+        axios.post(`http://localhost:5000/update/${id}`, updatedDoc)
+            .then(data => {
+                setHeartDatasets([...heartDatasets, data.data].filter(set => set._id !== id));
+            })
             .catch(err => console.log(err));
     };
 
@@ -62,7 +82,8 @@ export default function Dashboard({ language }) {
             <DataTable
                 data={heartDatasets}
                 language={language}
-                deleteEntry={(id) => deleteEntry(id)}
+                deleteEntry={id => deleteEntry(id)}
+                updateEntry={(id, date, systolic, diastolic, heartRate, bloodSugar, unit) => updateEntry(id, date, systolic, diastolic, heartRate, bloodSugar, unit)}
             />
             <HeartDataPlots 
                 data={heartDatasets} 
