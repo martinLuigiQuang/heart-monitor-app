@@ -1,7 +1,15 @@
 import { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useLanguage } from '../../languageContext/LanguageContext.js';
+import { useDatasets, useEntryDeletion, useEntryUpdate } from '../DatasetsContext.js';
+// import TableColumn from './TableColumn.js';
+import Button from '../../button/Button.js';
 
-export default function DataTable ({ data, language, deleteEntry, updateEntry }) {
+export default function DataTable () {
+    const language = useLanguage();
+    const data = useDatasets();
+    const deleteEntry = useEntryDeletion();
+    const updateEntry = useEntryUpdate();
     const [ numOfEntries, setNumOfEntries ] = useState(10);
     const [ entryToBeDeleted, setEntryToBeDeleted ] = useState(null);
     const [ idToBeDeleted, setIdToBeDeleted ] = useState(null);
@@ -22,26 +30,22 @@ export default function DataTable ({ data, language, deleteEntry, updateEntry })
         const dateNode = [...event.target.parentNode.parentNode.parentNode.children[0].children].filter(node => node.offsetTop === event.target.offsetTop)[0];
         const datetime = `${dateNode.firstChild.innerText} ${language.timeAt} ${dateNode.lastChild.innerText}`;
         return (
-            <form className={`overlayConfirmation wrapper ${deleteConfirmation ? '' : 'hidden'}`} onClick={event => event.preventDefault()}>
-                <h3>{ `${language.deleteConfirmation} ${datetime} ?` }</h3>
+            <form className={ `overlayConfirmation wrapper ${ deleteConfirmation ? '' : 'hidden' }` } onClick={event => event.preventDefault()}>
+                <h3>{ `${ language.deleteConfirmation } ${ datetime } ?` }</h3>
                 <div className="buttonsContainer">
-                    <button onClick={() => setDeleteConfirmation(false) }>{ language.buttonCancel }</button>
-                    <button onClick={() => { 
+                    <Button label={ language.buttonCancel } onClick={() => setDeleteConfirmation(false) }></Button>
+                    <Button label={ language.buttonOK } onClick={() => { 
                         setDeleteConfirmation(false);
                         setEntryToBeDeleted(null);
                         setIdToBeDeleted(null);
                         deleteEntry(id);
-                    }}>
-                        { 
-                            language.buttonOK 
-                        }
-                    </button>
+                    }}></Button>
                 </div>
             </form>
         );
     };
 
-    function renderDataEntries(datasets, entry, numOfEntries) {
+    function renderDataColumns(datasets, entry, numOfEntries) {
         return (
             datasets.map( (set, index) => {
                 return (
@@ -65,16 +69,12 @@ export default function DataTable ({ data, language, deleteEntry, updateEntry })
                                         <Link to="/dashboard" onClick={() => {
                                             setUpdatedId(set._id);
                                             updateEntry(set._id, '2021-02-14T05:40', 10, 0, 0, 0, 'mmol/L');
-                                        }}>
-                                            { language.update }
-                                        </Link> | 
+                                        }}>{ language.update }</Link> | 
                                         <Link to="/dashboard" onClick={event => {
                                             setEntryToBeDeleted(event);
                                             setIdToBeDeleted(set._id);
                                             setDeleteConfirmation(true);
-                                        }}>
-                                            { language.delete }
-                                        </Link>
+                                        }}>{ language.delete }</Link>
                                     </Fragment>
                             }
                         </li>
@@ -91,20 +91,17 @@ export default function DataTable ({ data, language, deleteEntry, updateEntry })
                     return (
                         <ul className="dataEntry" key={entry ? entry : "controlPanel"}>
                             <li className="headings">{ entry ? language[entry] : null }</li>
-                            {
-                                renderDataEntries(data, entry, numOfEntries)
-                            }
+                            {/* <TableColumn datasets={ data } entry={ entry } numOfEntries={ numOfEntries } ></TableColumn> */}
+                            { renderDataColumns(data, entry, numOfEntries) }
                         </ul>
                     );
                 })
             }
-            <button onClick={() => handleShowmore(data)} disabled={data.length <= 10}>
-                { 
-                    numOfEntries <= 10
-                    ?   language.showMore
-                    :   language.showLess 
-                }
-            </button>
+            <Button
+                label={ numOfEntries <= 10 ? language.showMore : language.showLess }
+                onClick={ () => handleShowmore(data) }
+                disabled={ data.length <= 10 }
+            ></Button>
             {
                 entryToBeDeleted && idToBeDeleted
                 ?   renderDeleteConfirmationMessage(entryToBeDeleted, idToBeDeleted)

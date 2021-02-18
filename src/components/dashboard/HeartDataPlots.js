@@ -1,7 +1,14 @@
+import { usePlotWidth } from './PlotWidthContext.js';
+import { useLanguage } from '../languageContext/LanguageContext.js';
+import { useDatasets } from './DatasetsContext.js';
 import createPlotlyComponent from 'react-plotly.js/factory';
 const Plot = createPlotlyComponent(window.Plotly);
 
-export default function HeartDataPlots ({ data, language, plotWidth }) {
+export default function HeartDataPlots () {
+    const language = useLanguage();
+    const plotWidth = usePlotWidth();
+    const data = useDatasets();
+
     const systolicPressure = {
         x: data.filter(set => set.heartData.systolicPressure).map(set => new Date(set.date)),
         y: data.filter(set => set.heartData.systolicPressure).map(set => set.heartData.systolicPressure),
