@@ -1,16 +1,26 @@
-// import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
+import React, { useState, useContext } from 'react';
 
-// export default function DataTableProvider () {
-//     const [ numOfEntries, setNumOfEntries ] = useState(10);
-//     const [ entryToBeDeleted, setEntryToBeDeleted ] = useState(null);
-//     const [ idToBeDeleted, setIdToBeDeleted ] = useState(null);
-//     const [ deleteConfirmation, setDeleteConfirmation ] = useState(false);
-//     const [ updatedId, setUpdatedId ] = useState(false);
+const DisplayContext = React.createContext();
 
+export function useDataDisplay () {
+    return useContext(DisplayContext);
+};
 
+export default function DataTableDisplayProvider ({ children }) {
+    const [ numOfEntries, setNumOfEntries ] = useState(10);
+    
+    function addDecimalPlace(value) {
+        return (value * 10) % 10 === 0 ? value + '.0' : value;
+    };
 
-//     return (
+    function handleShowmore(datasets) {
+        numOfEntries <= 10 ? setNumOfEntries(datasets.length) : setNumOfEntries(10);
+        return;
+    };
 
-//     );
-// };
+    return (
+        <DisplayContext.Provider value={{ numOfEntries, addDecimalPlace, handleShowmore }}>
+            { children }
+        </DisplayContext.Provider>
+    );
+};

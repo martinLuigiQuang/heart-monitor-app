@@ -80,7 +80,7 @@ export default function HeartDataPlots () {
     
         return (
             <Plot
-                heartDatasets={[
+                data={[
                     systolicPressure,
                     diastolicPressure,
                     heartRate,

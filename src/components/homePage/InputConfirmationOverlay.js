@@ -1,14 +1,13 @@
 import { InputConfirmation } from '../input/Input.js';
 import Button from '../button/Button.js';
 import { useLanguage } from '../languageContext/LanguageContext.js';
-import { useInput, useOverlay, useInputVerification } from './UserInputContext.js';
+import { useInput, useInputVerification } from './UserInputContext.js';
 
 export default function InputConfirmationOverlay () {
     const language = useLanguage();
-    const heartData = useInput();
+    const { inputConfirmation, verifyInput } = useInputVerification();
+    const { heartData } = useInput();
     const [ date, systolicPressure, diastolicPressure, heartRate, bloodSugar, bloodSugarUnit ] = heartData;
-    const inputConfirmation = useOverlay();
-    const verifyInput = useInputVerification();
     return (
         <form className={`overlayConfirmation wrapper ${inputConfirmation ? '' : 'hidden'}`} onSubmit={event => event.preventDefault()}>
             

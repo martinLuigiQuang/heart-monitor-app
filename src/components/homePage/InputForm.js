@@ -1,14 +1,11 @@
 import Input, { BloodSugarUnitOptions } from '../input/Input.js';
 import Button from '../button/Button.js';
 import { useLanguage } from '../languageContext/LanguageContext.js';
-import { useInput, useInputConfirmation, useInputUpdate, useUnitConversion } from './UserInputContext.js';
+import { useInput } from './UserInputContext.js';
 
 export default function InputForm () {
     const language = useLanguage();
-    const handleInputChange = useInputUpdate();
-    const handleUnitConversion = useUnitConversion();
-    const heartData = useInput();
-    const getInput = useInputConfirmation();
+    const { heartData, getInput, handleInputChange, handleUnitConversion } = useInput();
 
     return (
         <form className="dataInput wrapper" onSubmit={ getInput }>
