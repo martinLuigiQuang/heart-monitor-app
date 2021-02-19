@@ -1,15 +1,14 @@
 import { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../../languageContext/LanguageContext.js';
-import { useDatasets, useEntryDeletion, useEntryUpdate } from '../DatasetsContext.js';
+import { useDatasets, useDataTableUpdate } from '../DatasetsContext.js';
 // import TableColumn from './TableColumn.js';
 import Button from '../../button/Button.js';
 
 export default function DataTable () {
     const language = useLanguage();
-    const data = useDatasets();
-    const deleteEntry = useEntryDeletion();
-    const updateEntry = useEntryUpdate();
+    const heartDatasets = useDatasets();
+    const { deleteEntry, updateEntry } = useDataTableUpdate();
     const [ numOfEntries, setNumOfEntries ] = useState(10);
     const [ entryToBeDeleted, setEntryToBeDeleted ] = useState(null);
     const [ idToBeDeleted, setIdToBeDeleted ] = useState(null);
@@ -92,15 +91,15 @@ export default function DataTable () {
                         <ul className="dataEntry" key={entry ? entry : "controlPanel"}>
                             <li className="headings">{ entry ? language[entry] : null }</li>
                             {/* <TableColumn datasets={ data } entry={ entry } numOfEntries={ numOfEntries } ></TableColumn> */}
-                            { renderDataColumns(data, entry, numOfEntries) }
+                            { renderDataColumns(heartDatasets, entry, numOfEntries) }
                         </ul>
                     );
                 })
             }
             <Button
                 label={ numOfEntries <= 10 ? language.showMore : language.showLess }
-                onClick={ () => handleShowmore(data) }
-                disabled={ data.length <= 10 }
+                onClick={ () => handleShowmore(heartDatasets) }
+                disabled={ heartDatasets.length <= 10 }
             ></Button>
             {
                 entryToBeDeleted && idToBeDeleted

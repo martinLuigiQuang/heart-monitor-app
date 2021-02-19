@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
-import { useBloodSugarUnit, useDatasetsUpdate } from '../dashboard/DatasetsContext.js';
+import { useBloodSugarUnit } from '../dashboard/DatasetsContext.js';
 import './input.css';
 
 export default function Input ({ className, label, type, name, id, placeholder, value, onChange, unit, checked, min, max, step, usersDefinedUnit }) {
@@ -34,16 +34,16 @@ export function InputConfirmation ({ className, label, content, unit }) {
 };
 
 export function BloodSugarUnitOptions ({ label, bloodSugarUnit, onChange }) {
-    const unit = useBloodSugarUnit();
-    const update = useDatasetsUpdate();
+    const bloodSugarUnitContext = useBloodSugarUnit();
+    const { unit, handleUnitConversion } = bloodSugarUnitContext ? bloodSugarUnitContext : { unit: null, handleUnitConversion: null }
     return (
         <Fragment>
             { label ? <p>{ label }</p> : null }
             <input  type="radio" name="bloodSugarUnit" value="mmol/L" id="mmol" 
-                    checked={bloodSugarUnit ? bloodSugarUnit === 'mmol/L' : unit === 'mmol/L'} onChange={ onChange ? onChange : update }/>
+                    checked={bloodSugarUnit ? bloodSugarUnit === 'mmol/L' : unit === 'mmol/L'} onChange={ onChange ? onChange : handleUnitConversion }/>
             <label htmlFor="mmol">mmol/L</label>
             <input  type="radio" name="bloodSugarUnit" value="mg/dL" id="mg" 
-                    checked={bloodSugarUnit ? bloodSugarUnit === 'mg/dL' : unit === 'mg/dL'} onChange={ onChange ? onChange : update }/>
+                    checked={bloodSugarUnit ? bloodSugarUnit === 'mg/dL' : unit === 'mg/dL'} onChange={ onChange ? onChange : handleUnitConversion }/>
             <label htmlFor="mg">mg/dL</label>
         </Fragment>
     );
