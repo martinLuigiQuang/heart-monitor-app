@@ -4,6 +4,7 @@ import axios from 'axios';
 const DatasetsContext = React.createContext();
 const BloodSugarUnitContext = React.createContext();
 const UpdateDataTableContext = React.createContext();
+const DeleteEntryContext = React.createContext();
 
 export function useDatasets () {
     return useContext(DatasetsContext);
@@ -17,9 +18,17 @@ export function useDataTableUpdate () {
     return useContext(UpdateDataTableContext);
 };
 
+export function useEntryDelete () {
+    return useContext(DeleteEntryContext);
+};
+
 export default function DatasetsProvider ({ children }) {
-    const [heartDatasets, setHeartDatasets] = useState([]);
-    const [unit, setBloodSugarUnit] = useState('mmol/L');
+    const [ heartDatasets, setHeartDatasets ] = useState([]);
+    const [ unit, setBloodSugarUnit ] = useState('mmol/L');
+    const [ entryToBeDeleted, setEntryToBeDeleted ] = useState(null);
+    const [ idToBeDeleted, setIdToBeDeleted ] = useState(null);
+    const [ deleteConfirmation, setDeleteConfirmation ] = useState(false);
+    const [ updatedId, setUpdatedId ] = useState(false);
 
     useEffect(() => {
         // get data from database
@@ -77,8 +86,10 @@ export default function DatasetsProvider ({ children }) {
     return (
         <DatasetsContext.Provider value={ heartDatasets }>
             <BloodSugarUnitContext.Provider value={{ unit, handleUnitConversion }}>
-                <UpdateDataTableContext.Provider value={{ deleteEntry, updateEntry }}>
-                    { children }
+                <UpdateDataTableContext.Provider value={{ updateEntry, updatedId, setUpdatedId }}>
+                    <DeleteEntryContext.Provider value={{ deleteEntry, entryToBeDeleted, setEntryToBeDeleted, idToBeDeleted, setIdToBeDeleted, deleteConfirmation, setDeleteConfirmation }}>
+                        { children }
+                    </DeleteEntryContext.Provider>
                 </UpdateDataTableContext.Provider>
             </BloodSugarUnitContext.Provider>
         </DatasetsContext.Provider>

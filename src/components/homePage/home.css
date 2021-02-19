@@ -57,6 +57,3 @@ form button {
     align-self: center;
     text-transform: capitalize;
 }
-form.overlayConfirmation.hidden {
-    display: none;
-}

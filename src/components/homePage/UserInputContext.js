@@ -2,30 +2,10 @@ import React, { useContext, useState } from 'react';
 import axios from 'axios';
 
 const UserInputContext = React.createContext();
-const GetUserInputContext = React.createContext();
-const UserInputUpdateContext = React.createContext();
-const BloodSugarUnitConversionContext = React.createContext();
-const ConfirmationContext = React.createContext();
 const InputVerificationContext = React.createContext();
 
 export function useInput () {
     return useContext(UserInputContext);
-};
-
-export function useInputConfirmation () {
-    return useContext(GetUserInputContext);
-};
-
-export function useUnitConversion () {
-    return useContext(BloodSugarUnitConversionContext);
-};
-
-export function useInputUpdate () {
-    return useContext(UserInputUpdateContext);
-}
-
-export function useOverlay () {
-    return useContext(ConfirmationContext);
 };
 
 export function useInputVerification () {
@@ -85,18 +65,10 @@ export default function UserInputProvider ({ children }) {
     };
 
     return (
-        <UserInputContext.Provider value={ heartData }>
-            <GetUserInputContext.Provider value={ getInput }>
-                <UserInputUpdateContext.Provider value={ handleInputChange }>
-                    <BloodSugarUnitConversionContext.Provider value={ handleUnitConversion }>
-                        <ConfirmationContext.Provider value={ inputConfirmation }>
-                            <InputVerificationContext.Provider value={ verifyInput }>
-                                { children }
-                            </InputVerificationContext.Provider>
-                        </ConfirmationContext.Provider>
-                    </BloodSugarUnitConversionContext.Provider>
-                </UserInputUpdateContext.Provider>
-            </GetUserInputContext.Provider>
+        <UserInputContext.Provider value={{ heartData, getInput, handleInputChange, handleUnitConversion }}>
+            <InputVerificationContext.Provider value={{ inputConfirmation, verifyInput }}>
+                { children }
+            </InputVerificationContext.Provider>
         </UserInputContext.Provider>
     );
 };

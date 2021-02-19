@@ -12,7 +12,7 @@ function App() {
           <LanguageProvider>
             <Header />
             <Route exact path="/" component={ Home }/>
-            {/* <Route path="/dashboard" component={ Dashboard }/> */}
+            <Route path="/dashboard" component={ Dashboard }/>
           </LanguageProvider>
         </div>
     </Router>
