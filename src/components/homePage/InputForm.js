@@ -41,7 +41,7 @@ export default function InputForm () {
                 className="input--bloodSugar" label={ language.bloodSugarLevel + ':' } id="bloodSugar" 
                 type="number" placeholder={ heartData[5] === 'mmol/L' ? 5.5 : 5.5*18 } min="0" max={ heartData[5] === 'mmol/L' ? 5.5 : 5.5*18 } step="0.1"
                 onChange={event => handleInputChange(event, 4)}
-                usersDefinedUnit={
+                usersDefinedUnit={ 
                     <BloodSugarUnitOptions
                         bloodSugarUnit={ heartData[5] }
                         onChange={ handleUnitConversion }
