@@ -2,7 +2,6 @@ import DataTable from './dataTable/DataTable.js';
 import HeartDataPlots from './HeartDataPlots.js';
 import { BloodSugarUnitOptions } from '../input/Input.js';
 import { useLanguage } from '../languageContext/LanguageContext.js';
-import PlotWidthProvider from './PlotWidthContext.js';
 import DatasetsProvider from './DatasetsContext.js';
 import './dashboard.css';
 
@@ -16,9 +15,7 @@ export default function Dashboard () {
                     <BloodSugarUnitOptions label={ language.bloodSugarUnit + ':' }></BloodSugarUnitOptions>
                 </div>
                 <DataTable />
-                <PlotWidthProvider>
-                    <HeartDataPlots />
-                </PlotWidthProvider>
+                <HeartDataPlots />
             </DatasetsProvider>
         </main>
     );

@@ -3,9 +3,7 @@ import axios from 'axios';
 
 const DatasetsContext = React.createContext();
 const BloodSugarUnitContext = React.createContext();
-const UpdateDatasetsContext = React.createContext();
-const UpdateEntryContext = React.createContext();
-const DeleteEntryContext = React.createContext();
+const UpdateDataTableContext = React.createContext();
 
 export function useDatasets () {
     return useContext(DatasetsContext);
@@ -15,21 +13,13 @@ export function useBloodSugarUnit () {
     return useContext(BloodSugarUnitContext);
 };
 
-export function useDatasetsUpdate () {
-    return useContext(UpdateDatasetsContext);
-};
-
-export function useEntryDeletion () {
-    return useContext(DeleteEntryContext);
-};
-
-export function useEntryUpdate () {
-    return useContext(UpdateEntryContext);
+export function useDataTableUpdate () {
+    return useContext(UpdateDataTableContext);
 };
 
 export default function DatasetsProvider ({ children }) {
     const [heartDatasets, setHeartDatasets] = useState([]);
-    const [bloodSugarUnit, setBloodSugarUnit] = useState('mmol/L');
+    const [unit, setBloodSugarUnit] = useState('mmol/L');
 
     useEffect(() => {
         // get data from database
@@ -42,6 +32,7 @@ export default function DatasetsProvider ({ children }) {
         axios.delete(`http://localhost:5000/delete/${id}`)
             .then(data => setHeartDatasets(heartDatasets.filter(set => set._id !== data.data._id)))
             .catch(err => console.log(err));
+        return;
     };
 
     function updateEntry(id) {
@@ -58,10 +49,11 @@ export default function DatasetsProvider ({ children }) {
         axios.post(`http://localhost:5000/update/${id}`, updatedDoc)
             .then(data => setHeartDatasets([...heartDatasets, data.data].filter(set => set._id !== id)))
             .catch(err => console.log(err));
+        return;
     };
 
     function handleUnitConversion(event) {
-        if (bloodSugarUnit !== event.target.value) {
+        if (unit !== event.target.value) {
             setBloodSugarUnit(event.target.value);
             updateBloodSugarLevel(heartDatasets, event.target.value);
         };
@@ -84,14 +76,10 @@ export default function DatasetsProvider ({ children }) {
 
     return (
         <DatasetsContext.Provider value={ heartDatasets }>
-            <BloodSugarUnitContext.Provider value={ bloodSugarUnit }>
-                <UpdateDatasetsContext.Provider value={ handleUnitConversion }>
-                    <DeleteEntryContext.Provider value={ deleteEntry }>
-                        <UpdateEntryContext.Provider value={ updateEntry }>
-                            { children }
-                        </UpdateEntryContext.Provider>
-                    </DeleteEntryContext.Provider>
-                </UpdateDatasetsContext.Provider>
+            <BloodSugarUnitContext.Provider value={{ unit, handleUnitConversion }}>
+                <UpdateDataTableContext.Provider value={{ deleteEntry, updateEntry }}>
+                    { children }
+                </UpdateDataTableContext.Provider>
             </BloodSugarUnitContext.Provider>
         </DatasetsContext.Provider>
     );
