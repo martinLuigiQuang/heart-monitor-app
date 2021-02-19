@@ -6,6 +6,7 @@ import { useInput, useInputVerification } from './UserInputContext.js';
 export default function InputConfirmationOverlay () {
     const language = useLanguage();
     const { inputConfirmation, verifyInput } = useInputVerification();
+    console.log(inputConfirmation)
     const { heartData } = useInput();
     const [ date, systolicPressure, diastolicPressure, heartRate, bloodSugar, bloodSugarUnit ] = heartData;
     return (

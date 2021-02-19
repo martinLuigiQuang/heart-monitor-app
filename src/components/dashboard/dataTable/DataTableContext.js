@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react';
 
-const DisplayContext = React.createContext();
+const DataTableDisplayContext = React.createContext();
 
 export function useDataDisplay () {
-    return useContext(DisplayContext);
+    return useContext(DataTableDisplayContext);
 };
 
 export default function DataTableDisplayProvider ({ children }) {
@@ -19,8 +19,8 @@ export default function DataTableDisplayProvider ({ children }) {
     };
 
     return (
-        <DisplayContext.Provider value={{ numOfEntries, addDecimalPlace, handleShowmore }}>
+        <DataTableDisplayContext.Provider value={{ numOfEntries, addDecimalPlace, handleShowmore }}>
             { children }
-        </DisplayContext.Provider>
+        </DataTableDisplayContext.Provider>
     );
 };
