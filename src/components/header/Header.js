@@ -18,8 +18,8 @@ export default function Header() {
                 </ul>
             </nav>
             <div className="languageButtons">
-                <Button label="EN" className="" ariaLabel="choose english language" onClick={() => toggleLanguage(english)}></Button>
-                <Button label="VN" className="" ariaLabel="choose vietnamese language" onClick={() => toggleLanguage(tiếng_việt)}></Button>
+                <Button label="EN" className="" ariaLabel="choose english language" onClick={() => toggleLanguage(english)} />
+                <Button label="VN" className="" ariaLabel="choose vietnamese language" onClick={() => toggleLanguage(tiếng_việt)} />
             </div>
         </header>
     );

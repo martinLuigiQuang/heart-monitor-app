@@ -19,7 +19,7 @@ export default function DataTable () {
                     return (
                         <ul className="dataEntry" key={heading ? heading : "controlPanel"}>
                             <li className="headings">{ heading ? language[heading] : null }</li>
-                            <TableColumn heading={ heading } ></TableColumn>
+                            <TableColumn heading={ heading } />
                         </ul>
                     );
                 })
@@ -28,10 +28,10 @@ export default function DataTable () {
                 label={ numOfEntries <= 10 ? language.showMore : language.showLess }
                 onClick={ () => handleShowmore(heartDatasets) }
                 disabled={ heartDatasets.length <= 10 }
-            ></Button>
+            />
             {
                 entryToBeDeleted && idToBeDeleted
-                ?   <EntryDeleteConfirmation></EntryDeleteConfirmation>
+                ?   <EntryDeleteConfirmation />
                 :   ''
             }
         </div>
