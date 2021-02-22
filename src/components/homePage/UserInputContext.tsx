@@ -1,28 +1,35 @@
 import React, { useContext, useState } from 'react';
 import axios from 'axios';
 
-export type HeartData = {
-    date: string,
-    heartData: {
-        systolicPressure: string,
-        diastolicPressure: string,
-        heartRate: string,
-        bloodSugar: string,
-        bloodSugarUnit: string
-    }
+// Create and export UserInputContext 
+export type Data = {
+    'systolicPressure': string,
+    'diastolicPressure': string,
+    'heartRate': string,
+    'bloodSugar': string,
+    'bloodSugarUnit': string
+}
+type HeartData = {
+    'date': string,
+    'heartData': Data
 };
 type UserInputType = {
     heartData: HeartData,
     getInput: (event: React.SyntheticEvent) => void,
-    handleInputChange: (event: React.SyntheticEvent, key: string) => HeartData
+    handleInputChange: (event: React.SyntheticEvent, key?: keyof Data) => HeartData,
+    handleUnitConversion: (event: React.SyntheticEvent) => string
 }
 const UserInputContext = React.createContext<UserInputType | undefined>(undefined);
-const InputVerificationContext = React.createContext();
-
 export function useInput () {
     return useContext(UserInputContext);
 };
 
+// Create and export InputVerificationContext
+type InputVerificationType = {
+    inputConfirmation: boolean,
+    verifyInput: (verified: boolean) => void
+};
+const InputVerificationContext = React.createContext<InputVerificationType | undefined>(undefined);
 export function useInputVerification () {
     return useContext(InputVerificationContext);
 };
@@ -31,11 +38,11 @@ export default function UserInputProvider ({ children }: HTMLElement): JSX.Eleme
     const localData: HeartData = {
         date: new Date().toLocaleDateString(),
         heartData: {
-            systolicPressure: '',
-            diastolicPressure: '',
-            heartRate: '',
-            bloodSugar: '',
-            bloodSugarUnit: ''
+            systolicPressure: '0',
+            diastolicPressure: '0',
+            heartRate: '0',
+            bloodSugar: '0',
+            bloodSugarUnit: 'mmol/L'
         }
     }
     const [inputConfirmation, setInputConfirmation] = useState(false);
@@ -52,11 +59,11 @@ export default function UserInputProvider ({ children }: HTMLElement): JSX.Eleme
             const mongoDBDoc: HeartData = {
                 date: arguments[1],
                 heartData: {
-                    systolicPressure: arguments[2],
-                    diastolicPressure: arguments[3],
-                    heartRate: arguments[4],
-                    bloodSugar: arguments[5],
-                    bloodSugarUnit: arguments[5]
+                    systolicPressure: arguments[2]['systolicPressure'],
+                    diastolicPressure: arguments[2]['diastolicPressure'],
+                    heartRate: arguments[2]['heartRate'],
+                    bloodSugar: arguments[2]['bloodSugar'],
+                    bloodSugarUnit: arguments[2]['bloodSugarUnit']
                 }
             };
             axios.post('http://localhost:5000/', mongoDBDoc).catch(err => console.log(err));
@@ -76,7 +83,7 @@ export default function UserInputProvider ({ children }: HTMLElement): JSX.Eleme
             newData.heartData.bloodSugarUnit = newUnit;
             setHeartData(newData);
             // update blood sugar level if reading exists and target.parentNode exists
-            if (heartData.heartData.bloodSugar && target.parentNode && target.parentNode.children[1]) {
+            if (heartData.heartData.bloodSugar !== '0' && target.parentNode && target.parentNode.children[1]) {
                 const targetElement = target.parentNode.children[1] as HTMLInputElement;
                 if (oldUnit === 'mg/dL') {
                     // math calculation to round new blood sugar level to one decimal place
@@ -98,15 +105,17 @@ export default function UserInputProvider ({ children }: HTMLElement): JSX.Eleme
         };
     };
 
-    function handleInputChange (event: React.SyntheticEvent, key: K): HeartData {
+    function handleInputChange (event: React.SyntheticEvent, key?: keyof Data): HeartData {
         const target = event.target as HTMLInputElement;
         if (target.value) {
             // deep copy of original heartData object
             const newData = {date: heartData.date, heartData: {...heartData.heartData}};
-            if (key === 'date') {
-                newData.date = target.value;
-            } else {
-                newData.heartData[key] = target.value;
+            switch (key) {
+                case undefined: 
+                    newData['date'] = target.value;
+                    break;
+                default:
+                    newData.heartData[key] = target.value;                   
             };
             setHeartData(newData);
             return newData;

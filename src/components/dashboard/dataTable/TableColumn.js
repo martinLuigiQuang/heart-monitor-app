@@ -23,10 +23,10 @@ export default function TableColumn ({ heading }) {
                                         <span className="date bold">{ set.date.slice(11) }</span>
                                     </Fragment>
                                 :   heading === 'bloodSugarLevel'
-                                ?   set.heartData.bloodSugar
+                                ?   set.heartData.bloodSugar && set.heartData.bloodSugar !== '0'
                                     ?   addDecimalPlace(set.heartData.bloodSugar)
                                     :   '-'
-                                :   set.heartData[heading]
+                                :   set.heartData[heading] && set.heartData[heading] !== '0'
                                     ?   set.heartData[heading]
                                     :   '-'
                             :   <Fragment>

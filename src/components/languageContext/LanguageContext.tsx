@@ -5,7 +5,7 @@ type LanguageType = {
     language: Language,
     toggleLanguage: (language: Language) => Language
 }
-const LanguageContext = React.createContext<LanguageType | undefined>(undefined);
+const LanguageContext = React.createContext<LanguageType | null>(null);
 export function useLanguage () {
     return useContext(LanguageContext);
 };

@@ -13,34 +13,35 @@ export default function InputForm () {
             <Input 
                 className="input--date" label={ language.date + ':' } id="date" 
                 type="datetime-local"
-                onChange={ event => handleInputChange(event, 0) }
+                onChange={ event => handleInputChange(event) }
             />
 
             <Input 
                 className="input--systolic" label={ language.systolicPressure + ':' } unit="mmHg" id="systolic" 
                 type="number" placeholder="110" min="0" max="180"
-                onChange={ event => handleInputChange(event, 1) }
+                onChange={ event => handleInputChange(event, 'systolicPressure') }
             />
 
             <Input 
                 className="input--diastolic" label={ language.diastolicPressure + ':' } unit="mmHg" id="diastolic" 
                 type="number" placeholder="70" min="0" max="100"
-                onChange={ event => handleInputChange(event, 2) }
+                onChange={ event => handleInputChange(event, 'diastolicPressure') }
             />
 
             <Input 
                 className="input--heartRate" label={ language.heartRate + ':' } unit="bpm" id="heartRate" 
                 type="number" placeholder="65" min="0" max="180"
-                onChange={ event => handleInputChange(event, 3) }
+                onChange={ event => handleInputChange(event, 'heartRate') }
            />
 
             <Input 
                 className="input--bloodSugar" label={ language.bloodSugarLevel + ':' } id="bloodSugar" 
-                type="number" placeholder={ heartData[5] === 'mmol/L' ? `5.5` : `${5.5*18}` } min="0" max={ heartData[5] === 'mmol/L' ? 15.5 : 15.5*18 } step="0.1"
-                onChange={event => handleInputChange(event, 4)}
+                type="number" placeholder={ heartData.heartData.bloodSugarUnit === 'mmol/L' ? `5.5` : `${5.5*18}` } 
+                min="0" max={ heartData.heartData.bloodSugarUnit === 'mmol/L' ? 15.5 : 15.5*18 } step="0.1"
+                onChange={event => handleInputChange(event, 'bloodSugarLevel')}
                 usersDefinedUnit={ 
                     <BloodSugarUnitOptions
-                        bloodSugarUnit={ heartData[5] }
+                        bloodSugarUnit={ heartData.heartData.bloodSugarUnit }
                         onChange={ handleUnitConversion }
                     ></BloodSugarUnitOptions>
                 }

@@ -1,19 +1,14 @@
 import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { Data } from '../homePage/UserInputContext';
 
 // Create and export DatasetsContext
 export type DatasetsType = {
     _id: string,
     date: string,
-    heartData: {
-        systolicPressure: string,
-        diastolicPressure: string,
-        heartRate: string,
-        bloodSugar: string,
-        bloodSugarUnit: string
-    }
+    heartData: Data
 };
-const DatasetsContext = React.createContext<DatasetsType[] | undefined>(undefined);
+const DatasetsContext = React.createContext<DatasetsType[] | null>(null);
 export function useDatasets () {
     return useContext(DatasetsContext);
 };
@@ -23,7 +18,7 @@ type BloodSugarUnitType = {
     unit: string,
     handleUnitConversion: (event: React.SyntheticEvent) => string  
 };
-const BloodSugarUnitContext = React.createContext<BloodSugarUnitType | undefined>(undefined);
+const BloodSugarUnitContext = React.createContext<BloodSugarUnitType | null>(null);
 export function useBloodSugarUnit () {
     return useContext(BloodSugarUnitContext);
 };
@@ -33,7 +28,7 @@ type UpdateDataTableType = {
     updatedId: string,
     setState_updatedId: (id: string) => string
 };
-const UpdateDataTableContext = React.createContext<UpdateDataTableType | undefined>(undefined);
+const UpdateDataTableContext = React.createContext<UpdateDataTableType | null>(null);
 export function useDataTableUpdate () {
     return useContext(UpdateDataTableContext);
 };
@@ -47,7 +42,7 @@ type DeleteEntryType = {
     deleteConfirmation: boolean,
     setState_deleteConfirmation: (confirmed: boolean) => void
 };
-const DeleteEntryContext = React.createContext<DeleteEntryType | undefined>(undefined);
+const DeleteEntryContext = React.createContext<DeleteEntryType | null>(null);
 export function useEntryDelete () {
     return useContext(DeleteEntryContext);
 };
@@ -62,7 +57,7 @@ export default function DatasetsProvider ({ children }: HTMLElement): JSX.Elemen
                 diastolicPressure: '-',
                 heartRate: '-',
                 bloodSugar: '-',
-                bloodSugarUnit: '-'
+                bloodSugarUnit: 'mmol/L'
             }
         }
     ];

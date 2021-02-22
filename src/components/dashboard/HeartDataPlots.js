@@ -9,10 +9,14 @@ export default function HeartDataPlots () {
     const heartDatasets = useDatasets();
     const plotWidth = usePlotWidth();
 
+    function checkDataExistence(set, data) {
+        return set.heartData[data] && set.heartData[data] !== '0';
+    };
+
     if (heartDatasets.length) {
         const systolicPressure = {
-            x: heartDatasets.filter(set => set.heartData.systolicPressure).map(set => new Date(set.date)),
-            y: heartDatasets.filter(set => set.heartData.systolicPressure).map(set => set.heartData.systolicPressure),
+            x: heartDatasets.filter(set => checkDataExistence(set, 'systolicPressure')).map(set => new Date(set.date)),
+            y: heartDatasets.filter(set => checkDataExistence(set, 'systolicPressure')).map(set => set.heartData.systolicPressure),
             type: 'scatter',
             mode: 'lines+markers',
             marker: {color: 'red'},
@@ -20,8 +24,8 @@ export default function HeartDataPlots () {
         };
     
         const diastolicPressure = {
-            x: heartDatasets.filter(set => set.heartData.diastolicPressure).map(set => new Date(set.date)),
-            y: heartDatasets.filter(set => set.heartData.diastolicPressure).map(set => set.heartData.diastolicPressure),
+            x: heartDatasets.filter(set => checkDataExistence(set, 'diastolicPressure')).map(set => new Date(set.date)),
+            y: heartDatasets.filter(set => checkDataExistence(set, 'diastolicPressure')).map(set => set.heartData.diastolicPressure),
             yaxis: 'y2',
             type: 'scatter',
             mode: 'lines+markers',
@@ -30,8 +34,8 @@ export default function HeartDataPlots () {
         };
     
         const heartRate = {
-            x: heartDatasets.filter(set => set.heartData.heartRate).map(set => new Date(set.date)),
-            y: heartDatasets.filter(set => set.heartData.heartRate).map(set => set.heartData.heartRate),
+            x: heartDatasets.filter(set => checkDataExistence(set, 'heartRate')).map(set => new Date(set.date)),
+            y: heartDatasets.filter(set => checkDataExistence(set, 'heartRate')).map(set => set.heartData.heartRate),
             yaxis: 'y3',
             type: 'scatter',
             mode: 'lines+markers',
