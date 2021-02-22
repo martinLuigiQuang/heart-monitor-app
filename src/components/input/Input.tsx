@@ -1,8 +1,25 @@
-import { Fragment } from 'react';
-import { useBloodSugarUnit } from '../dashboard/DatasetsContext.js';
+import React, { Fragment } from 'react';
+import { useBloodSugarUnit } from '../dashboard/DatasetsContext';
 import './input.css';
 
-export default function Input ({ className, label, type, name, id, placeholder, value, onChange, unit, checked, min, max, step, usersDefinedUnit }) {
+type InputAttributes = {
+    type: string,
+    id: string,
+    label: string,
+    value: string,
+    className?: string,
+    name?: string,
+    placeholder?: string,
+    onChange?: React.ChangeEventHandler<HTMLInputElement>
+    checked?: boolean,
+    min?: string,
+    max?: string,
+    step?: string,
+    usersDefinedUnit?: HTMLElement,
+    unit?: string
+}
+
+export default function Input ({ className, label, type, name, id, placeholder, value, onChange, unit, checked, min, max, step, usersDefinedUnit }: InputAttributes): JSX.Element {
     return (
         <div className={ className }>
             <label htmlFor={ id }>{ label }</label>
@@ -23,7 +40,7 @@ export default function Input ({ className, label, type, name, id, placeholder, 
     );
 };
 
-export function InputConfirmation ({ className, label, content, unit }) {
+export function InputConfirmation ({ className, label, content, unit }: { className: string, label: string, content: string, unit?: string }): JSX.Element {
     return (
         <div className={ className }>
             <p>{ label }</p>
@@ -33,9 +50,9 @@ export function InputConfirmation ({ className, label, content, unit }) {
     );
 };
 
-export function BloodSugarUnitOptions ({ label, bloodSugarUnit, onChange }) {
+export function BloodSugarUnitOptions ({ label, bloodSugarUnit, onChange }: { label: string, bloodSugarUnit?: string, onChange?: React.ChangeEventHandler }): JSX.Element {
     const bloodSugarUnitContext = useBloodSugarUnit();
-    const { unit, handleUnitConversion } = bloodSugarUnitContext ? bloodSugarUnitContext : { unit: null, handleUnitConversion: null }
+    const { unit, handleUnitConversion }: { unit: string, handleUnitConversion: (event: React.SyntheticEvent) => string } | { unit: string, handleUnitConversion: undefined } = bloodSugarUnitContext ? bloodSugarUnitContext : { unit: '', handleUnitConversion: undefined }
     return (
         <Fragment>
             { label ? <p>{ label }</p> : null }

@@ -1,15 +1,15 @@
 import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { useDataDisplay } from './DataTableContext.js';
-import { useDatasets, useEntryDelete, useDataTableUpdate } from '../DatasetsContext.js';
-import { useLanguage } from '../../languageContext/LanguageContext.js';
+import { useDataDisplay } from './DataTableContext';
+import { useDatasets, useEntryDelete, useDataTableUpdate } from '../DatasetsContext';
+import { useLanguage } from '../../languageContext/LanguageContext';
 
 export default function TableColumn ({ heading }) {
-    const language = useLanguage();
     const heartDatasets = useDatasets();
+    const { language } = useLanguage();
     const { numOfEntries, addDecimalPlace } = useDataDisplay();
-    const { updateEntry, setUpdatedId } = useDataTableUpdate();
-    const { setEntryToBeDeleted, setIdToBeDeleted, setDeleteConfirmation } = useEntryDelete();
+    const { updateEntry, setState_updatedId } = useDataTableUpdate();
+    const { setState_dateToBeDeleted, setState_idToBeDeleted, setState_deleteConfirmation } = useEntryDelete();
     return (
         heartDatasets.map( (set, index) => {
             return (
@@ -31,13 +31,15 @@ export default function TableColumn ({ heading }) {
                                     :   '-'
                             :   <Fragment>
                                     <Link to="/dashboard" onClick={() => {
-                                        setUpdatedId(set._id);
+                                        setState_updatedId(set._id);
                                         updateEntry(set._id, '2021-02-14T05:40', 10, 0, 0, 0, 'mmol/L');
                                     }}>{ language.update }</Link> | 
                                     <Link to="/dashboard" onClick={event => {
-                                        setEntryToBeDeleted(event);
-                                        setIdToBeDeleted(set._id);
-                                        setDeleteConfirmation(true);
+                                        const dateNode = [...event.target.parentNode.parentNode.parentNode.children[0].children].filter(node => node.offsetTop === event.target.offsetTop)[0];
+                                        const date = `${dateNode.firstChild.innerText} ${language.timeAt} ${dateNode.lastChild.innerText}`;
+                                        setState_dateToBeDeleted(date);
+                                        setState_idToBeDeleted(set._id);
+                                        setState_deleteConfirmation(true);
                                     }}>{ language.delete }</Link>
                                 </Fragment>
                         }

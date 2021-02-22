@@ -1,22 +1,21 @@
-import { useLanguage } from '../../languageContext/LanguageContext.js';
-import { useEntryDelete } from '../DatasetsContext.js';
-import Button from '../../button/Button.js';
+import { useLanguage } from '../../languageContext/LanguageContext';
+import { useEntryDelete } from '../DatasetsContext';
+import Button from '../../button/Button';
 
 export default function EntryDeleteConfirmation () {
-    const language = useLanguage();
-    const { deleteConfirmation, setDeleteConfirmation, entryToBeDeleted, setEntryToBeDeleted, idToBeDeleted, setIdToBeDeleted, deleteEntry } = useEntryDelete();
-    const dateNode = [...entryToBeDeleted.target.parentNode.parentNode.parentNode.children[0].children].filter(node => node.offsetTop === entryToBeDeleted.target.offsetTop)[0];
-    const datetime = `${dateNode.firstChild.innerText} ${language.timeAt} ${dateNode.lastChild.innerText}`;
+    const { language } = useLanguage();
+    const { deleteConfirmation, setState_deleteConfirmation, dateToBeDeleted, setState_dateToBeDeleted, idToBeDeleted, setState_idToBeDeleted, deleteEntry } = useEntryDelete();
+   
     return (
         <div className={`transparent ${ deleteConfirmation ? '' : 'hidden' }`}>
             <form className={ `overlayConfirmation wrapper ${ deleteConfirmation ? '' : 'hidden' }` } onSubmit={event => event.preventDefault()}>
-                <h3>{ `${ language.deleteConfirmation } ${ datetime } ?` }</h3>
+                <h3>{ `${ language.deleteConfirmation } ${ dateToBeDeleted } ?` }</h3>
                 <div className="buttonsContainer">
-                    <Button label={ language.buttonCancel } onClick={() => setDeleteConfirmation(false) }></Button>
+                    <Button label={ language.buttonCancel } onClick={() => setState_deleteConfirmation(false) }></Button>
                     <Button label={ language.buttonOK } onClick={() => { 
-                        setDeleteConfirmation(false);
-                        setEntryToBeDeleted(null);
-                        setIdToBeDeleted(null);
+                        setState_deleteConfirmation(false);
+                        setState_dateToBeDeleted('');
+                        setState_idToBeDeleted('');
                         deleteEntry(idToBeDeleted);
                     }}></Button>
                 </div>

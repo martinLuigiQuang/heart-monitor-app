@@ -1,15 +1,15 @@
-import { useLanguage } from '../../languageContext/LanguageContext.js';
-import { useDatasets, useEntryDelete } from '../DatasetsContext.js';
-import { useDataDisplay } from './DataTableContext.js';
+import { useLanguage } from '../../languageContext/LanguageContext';
+import { useDatasets, useEntryDelete } from '../DatasetsContext';
+import { useDataDisplay } from './DataTableContext';
 import TableColumn from './TableColumn.js';
 import EntryDeleteConfirmation from './EntryDeleteConfirmation.js';
-import Button from '../../button/Button.js';
+import Button from '../../button/Button';
 
 export default function DataTable () {
-    const language = useLanguage();
     const heartDatasets = useDatasets();
-    const { numOfEntries, handleShowmore } = useDataDisplay();
-    const { idToBeDeleted, entryToBeDeleted } = useEntryDelete();
+    const { language } = useLanguage();
+    const { numOfEntries, handleShowMore } = useDataDisplay();
+    const { idToBeDeleted, dateToBeDeleted } = useEntryDelete();
     const heartDataHeadings = ['date', 'systolicPressure', 'diastolicPressure', 'heartRate', 'bloodSugarLevel', ''];
 
     return (
@@ -26,11 +26,11 @@ export default function DataTable () {
             }
             <Button
                 label={ numOfEntries <= 10 ? language.showMore : language.showLess }
-                onClick={ () => handleShowmore(heartDatasets) }
+                onClick={ () => handleShowMore(heartDatasets) }
                 disabled={ heartDatasets.length <= 10 }
             />
             {
-                entryToBeDeleted && idToBeDeleted
+                dateToBeDeleted && idToBeDeleted
                 ?   <EntryDeleteConfirmation />
                 :   ''
             }

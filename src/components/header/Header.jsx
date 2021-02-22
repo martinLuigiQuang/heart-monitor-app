@@ -1,12 +1,11 @@
 import { Link } from 'react-router-dom';
-import { english, tiếng_việt } from '../languageContext/languages.js';
-import { useLanguage, useLanguageToggle } from '../languageContext/LanguageContext.js';
-import Button from '../button/Button.js';
+import { english, tiếng_việt } from '../languageContext/languages';
+import { useLanguage } from '../languageContext/LanguageContext';
+import Button from '../button/Button';
 import './header.css';
 
 export default function Header() {
-    const language = useLanguage();
-    const toggleLanguage = useLanguageToggle();
+    const { language, toggleLanguage } = useLanguage();
 
     return (
         <header>

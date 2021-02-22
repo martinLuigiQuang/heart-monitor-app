@@ -1,4 +1,25 @@
-export const english = {
+export type Language = {
+    title: string,
+    navHome: string,
+    navDashboard: string,
+    date: string,
+    systolicPressure: string,
+    diastolicPressure: string,
+    heartRate: string,
+    bloodSugarLevel: string,
+    bloodSugarUnit: string,
+    buttonSubmit: string,
+    buttonCancel: string,
+    buttonOK: string,
+    update: string,
+    delete: string,
+    showMore: string,
+    showLess: string,
+    deleteConfirmation: string,
+    timeAt: string
+};
+
+export const english: Language = {
     title: 'heart monitor app',
     navHome: 'home',
     navDashboard: 'dashboard',
@@ -19,7 +40,7 @@ export const english = {
     timeAt: 'at'
 };
 
-export const tiếng_việt = {
+export const tiếng_việt: Language = {
     title: 'ứng dụng theo dõi tim mạch',
     navHome: 'trang chủ',
     navDashboard: 'bảng dữ liệu',

@@ -1,13 +1,13 @@
-import usePlotWidth from './plotWidth.js';
-import { useLanguage } from '../languageContext/LanguageContext.js';
-import { useDatasets } from './DatasetsContext.js';
+import usePlotWidth from './plotWidth';
+import { useLanguage } from '../languageContext/LanguageContext';
+import { useDatasets } from './DatasetsContext';
 import createPlotlyComponent from 'react-plotly.js/factory';
 const Plot = createPlotlyComponent(window.Plotly);
 
 export default function HeartDataPlots () {
-    const language = useLanguage();
-    const plotWidth = usePlotWidth();
+    const { language } = useLanguage();
     const heartDatasets = useDatasets();
+    const plotWidth = usePlotWidth();
 
     if (heartDatasets.length) {
         const systolicPressure = {
