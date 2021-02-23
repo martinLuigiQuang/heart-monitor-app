@@ -23,8 +23,8 @@ export function useBloodSugarUnit () {
     return useContext(BloodSugarUnitContext);
 };
 
-type UpdateDataTableType = {
-    updateEntry: (id: string) => string,
+export type UpdateDataTableType = {
+    updateEntry: (id: string, date: string, data: Data) => string,
     updatedId: string,
     setState_updatedId: (id: string) => string
 };
@@ -33,7 +33,7 @@ export function useDataTableUpdate () {
     return useContext(UpdateDataTableContext);
 };
 
-type DeleteEntryType = {
+export type DeleteEntryType = {
     deleteEntry: (id: string) => string,
     dateToBeDeleted: string,
     setState_dateToBeDeleted: (date: string) => string,
@@ -47,7 +47,7 @@ export function useEntryDelete () {
     return useContext(DeleteEntryContext);
 };
 
-export default function DatasetsProvider ({ children }: HTMLElement): JSX.Element {
+export default function DatasetsProvider ({ children }: { children: JSX.Element }): JSX.Element {
     const dummy: DatasetsType[] = [
         {
             _id: '-',
@@ -68,11 +68,12 @@ export default function DatasetsProvider ({ children }: HTMLElement): JSX.Elemen
     const [ deleteConfirmation, setDeleteConfirmation ] = useState(false);
     const [ updatedId, setUpdatedId ] = useState('');
 
-    useEffect(() => {
+    useEffect((): void => {
         // get data from database
         axios.get('http://localhost:5000/2021')
             .then(data => updateBloodSugarLevel(data.data, 'mmol/L'))
             .catch( err => console.log(err) );
+        return;
     }, []);
 
     function deleteEntry(id: string): string {
@@ -82,16 +83,10 @@ export default function DatasetsProvider ({ children }: HTMLElement): JSX.Elemen
         return id;
     };
 
-    function updateEntry(id: string): string {
+    function updateEntry(id: string, date: string, data: Data): string {
         const updatedDoc = {
-            date: arguments[1],
-            heartData: {
-                systolicPressure: arguments[2],
-                diastolicPressure: arguments[3],
-                heartRate: arguments[4],
-                bloodSugar: arguments[5],
-                bloodSugarUnit: arguments[5]
-            }
+            date: date,
+            heartData: data
         };
         axios.post(`http://localhost:5000/update/${id}`, updatedDoc)
             .then(data => setHeartDatasets([...heartDatasets, data.data].filter(set => set._id !== id)))

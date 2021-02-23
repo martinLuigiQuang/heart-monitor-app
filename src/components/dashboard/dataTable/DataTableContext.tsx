@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { DatasetsType } from '../DatasetsContext';
 
-type DataTableDisplayType = {
+export type DataTableDisplayType = {
     numOfEntries: number,
     addDecimalPlace: (value: number) => string,
     handleShowMore: (datasets: DatasetsType[]) => number
@@ -11,7 +11,7 @@ export function useDataDisplay () {
     return useContext(DataTableDisplayContext);
 };
 
-export default function DataTableDisplayProvider ({ children }: HTMLElement): JSX.Element {
+export default function DataTableDisplayProvider ({ children }: { children: JSX.Element }): JSX.Element {
     const [ numOfEntries, setNumOfEntries ] = useState(10);
     
     function addDecimalPlace(value: number | string): string {

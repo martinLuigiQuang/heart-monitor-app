@@ -6,7 +6,7 @@ type InputAttributes = {
     type: string,
     id: string,
     label: string,
-    value: string,
+    value?: string,
     className?: string,
     name?: string,
     placeholder?: string,
@@ -15,7 +15,7 @@ type InputAttributes = {
     min?: string,
     max?: string,
     step?: string,
-    usersDefinedUnit?: HTMLElement,
+    usersDefinedUnit?: JSX.Element,
     unit?: string
 }
 
@@ -50,7 +50,7 @@ export function InputConfirmation ({ className, label, content, unit }: { classN
     );
 };
 
-export function BloodSugarUnitOptions ({ label, bloodSugarUnit, onChange }: { label: string, bloodSugarUnit?: string, onChange?: React.ChangeEventHandler }): JSX.Element {
+export function BloodSugarUnitOptions ({ label, bloodSugarUnit, onChange }: { label?: string, bloodSugarUnit?: string, onChange?: React.ChangeEventHandler }): JSX.Element {
     const bloodSugarUnitContext = useBloodSugarUnit();
     const { unit, handleUnitConversion }: { unit: string, handleUnitConversion: (event: React.SyntheticEvent) => string } | { unit: string, handleUnitConversion: undefined } = bloodSugarUnitContext ? bloodSugarUnitContext : { unit: '', handleUnitConversion: undefined }
     return (

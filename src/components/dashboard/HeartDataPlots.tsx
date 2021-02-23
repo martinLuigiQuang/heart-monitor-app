@@ -1,16 +1,17 @@
+import { Fragment } from 'react';
 import usePlotWidth from './plotWidth';
-import { useLanguage } from '../languageContext/LanguageContext';
-import { useDatasets } from './DatasetsContext';
-import createPlotlyComponent from 'react-plotly.js/factory';
-const Plot = createPlotlyComponent(window.Plotly);
+import { Data } from '../homePage/UserInputContext';
+import { useLanguage, LanguageType } from '../languageContext/LanguageContext';
+import { useDatasets, DatasetsType } from './DatasetsContext';
+import PlotlyChart from 'react-plotlyjs-ts';
 
-export default function HeartDataPlots () {
-    const { language } = useLanguage();
-    const heartDatasets = useDatasets();
+export default function HeartDataPlots (): JSX.Element {
+    const { language } = useLanguage() as LanguageType;
+    const heartDatasets = useDatasets() as DatasetsType[];
     const plotWidth = usePlotWidth();
 
-    function checkDataExistence(set, data) {
-        return set.heartData[data] && set.heartData[data] !== '0';
+    function checkDataExistence(set: DatasetsType, key: keyof Data): boolean {
+        return set.heartData[key] !== undefined && set.heartData[key] !== null && set.heartData[key] !== '0';
     };
 
     if (heartDatasets.length) {
@@ -83,7 +84,7 @@ export default function HeartDataPlots () {
         };
     
         return (
-            <Plot
+            <PlotlyChart
                 data={[
                     systolicPressure,
                     diastolicPressure,
@@ -93,6 +94,6 @@ export default function HeartDataPlots () {
             />
         );
     } else {
-        return null;
+        return <Fragment></Fragment>;
     };
 };

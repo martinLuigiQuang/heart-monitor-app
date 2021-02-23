@@ -1,17 +1,17 @@
-import DataTable from './dataTable/DataTable.js';
-import HeartDataPlots from './HeartDataPlots.js';
+import DataTable from './dataTable/DataTable';
+import HeartDataPlots from './HeartDataPlots';
 import { BloodSugarUnitOptions } from '../input/Input';
-import { useLanguage } from '../languageContext/LanguageContext';
+import { useLanguage, LanguageType } from '../languageContext/LanguageContext';
 import DatasetsProvider from './DatasetsContext';
 import DataTableDisplayProvider from './dataTable/DataTableContext';
 import './dashboard.css';
 
-export default function Dashboard () {
-    const { language } = useLanguage();
+export default function Dashboard (): JSX.Element {
+    const { language } = useLanguage() as LanguageType;
     
     return (
-        <main>
-            <DatasetsProvider>
+        <DatasetsProvider>
+            <main>
                 <div className="bloodSugarUnit">
                     <BloodSugarUnitOptions label={ language.bloodSugarUnit + ':' }></BloodSugarUnitOptions>
                 </div>
@@ -19,7 +19,7 @@ export default function Dashboard () {
                     <DataTable />
                 </DataTableDisplayProvider>
                 <HeartDataPlots />
-            </DatasetsProvider>
-        </main>
+            </main>
+        </DatasetsProvider>
     );
 };

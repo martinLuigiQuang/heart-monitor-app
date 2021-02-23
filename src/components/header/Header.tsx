@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 import { english, tiếng_việt } from '../languageContext/languages';
-import { useLanguage } from '../languageContext/LanguageContext';
+import { useLanguage, LanguageType } from '../languageContext/LanguageContext';
 import Button from '../button/Button';
 import './header.css';
 
 export default function Header() {
-    const { language, toggleLanguage } = useLanguage();
-
+    const { language, toggleLanguage } = useLanguage() as LanguageType;
+    
     return (
         <header>
             <h1>{language.title}</h1>

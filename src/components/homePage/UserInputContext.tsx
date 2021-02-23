@@ -13,7 +13,7 @@ type HeartData = {
     'date': string,
     'heartData': Data
 };
-type UserInputType = {
+export type UserInputType = {
     heartData: HeartData,
     getInput: (event: React.SyntheticEvent) => void,
     handleInputChange: (event: React.SyntheticEvent, key?: keyof Data) => HeartData,
@@ -25,16 +25,16 @@ export function useInput () {
 };
 
 // Create and export InputVerificationContext
-type InputVerificationType = {
+export type InputVerificationType = {
     inputConfirmation: boolean,
-    verifyInput: (verified: boolean) => void
+    verifyInput: (verified: boolean, date?: string, data?: Data) => void
 };
 const InputVerificationContext = React.createContext<InputVerificationType | undefined>(undefined);
 export function useInputVerification () {
     return useContext(InputVerificationContext);
 };
 
-export default function UserInputProvider ({ children }: HTMLElement): JSX.Element {
+export default function UserInputProvider ({ children }: { children: JSX.Element }): JSX.Element {
     const localData: HeartData = {
         date: new Date().toLocaleDateString(),
         heartData: {
@@ -54,17 +54,11 @@ export default function UserInputProvider ({ children }: HTMLElement): JSX.Eleme
         return;
     };
 
-    function verifyInput (verified: boolean): void {
-        if (verified) {
+    function verifyInput (verified: boolean, date?: string, data?: Data): void {
+        if (verified && date && data) {
             const mongoDBDoc: HeartData = {
-                date: arguments[1],
-                heartData: {
-                    systolicPressure: arguments[2]['systolicPressure'],
-                    diastolicPressure: arguments[2]['diastolicPressure'],
-                    heartRate: arguments[2]['heartRate'],
-                    bloodSugar: arguments[2]['bloodSugar'],
-                    bloodSugarUnit: arguments[2]['bloodSugarUnit']
-                }
+                date: date,
+                heartData: data
             };
             axios.post('http://localhost:5000/', mongoDBDoc).catch(err => console.log(err));
         };
