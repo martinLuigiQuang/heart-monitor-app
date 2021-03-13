@@ -1,7 +1,9 @@
-import Input, { BloodSugarUnitOptions } from '../input/Input';
-import Button from '../button/Button';
-import { useLanguage, LanguageType } from '../languageContext/LanguageContext';
+import Input from '../common/input/Input';
+import UnitOptions from '../common/unitOptions/UnitOptions';
+import Button from '../common/button/Button';
+import { useLanguage, LanguageType } from '../common/languageContext/LanguageContext';
 import { useInput, UserInputType } from './UserInputContext';
+import { UnitsType } from '../common/unitOptions/units';
 
 export default function InputForm () {
     const { language } = useLanguage() as LanguageType;
@@ -10,40 +12,45 @@ export default function InputForm () {
     return (
         <form className="dataInput wrapper" onSubmit={ getInput }>
 
-            <Input 
-                className="input--date" label={ language.date + ':' } id="date" 
-                type="datetime-local"
-                onChange={ event => handleInputChange(event) }
+            <Input
+                className="input--date" label={ language.date + ':' }
+                type="datetime-local" 
+                value={ heartData.date }
+                onChange={ event => handleInputChange(event.target.value) }
             />
 
             <Input 
-                className="input--systolic" label={ language.systolicPressure + ':' } unit="mmHg" id="systolic" 
-                type="number" placeholder="110" min="0" max="180"
-                onChange={ event => handleInputChange(event, 'systolicPressure') }
+                className="input--systolic" label={ language.systolicPressure + ':' } unit="mmHg"
+                type="number" placeholder="110" min="0" max="180" 
+                value={ heartData.heartData.systolicPressure }
+                onChange={ event => handleInputChange(event.target.value, 'systolicPressure') }
             />
 
             <Input 
-                className="input--diastolic" label={ language.diastolicPressure + ':' } unit="mmHg" id="diastolic" 
-                type="number" placeholder="70" min="0" max="100"
-                onChange={ event => handleInputChange(event, 'diastolicPressure') }
+                className="input--diastolic" label={ language.diastolicPressure + ':' } unit="mmHg" 
+                type="number" placeholder="70" min="0" max="100" 
+                value={ heartData.heartData.diastolicPressure }
+                onChange={ event => handleInputChange(event.target.value, 'diastolicPressure') }
             />
 
             <Input 
-                className="input--heartRate" label={ language.heartRate + ':' } unit="bpm" id="heartRate" 
-                type="number" placeholder="65" min="0" max="180"
-                onChange={ event => handleInputChange(event, 'heartRate') }
+                className="input--heartRate" label={ language.heartRate + ':' } unit="bpm" 
+                type="number" placeholder="65" min="0" max="180" 
+                value={ heartData.heartData.heartRate }
+                onChange={ event => handleInputChange(event.target.value, 'heartRate') }
            />
 
             <Input 
-                className="input--bloodSugar" label={ language.bloodSugarLevel + ':' } id="bloodSugar" 
+                className="input--bloodSugar" label={ language.bloodSugarLevel + ':' } 
                 type="number" placeholder={ heartData.heartData.bloodSugarUnit === 'mmol/L' ? `5.5` : `${5.5*18}` } 
                 min="0" max={ `${heartData.heartData.bloodSugarUnit === 'mmol/L' ? 15.5 : 15.5*18}` } step="0.1"
-                onChange={event => handleInputChange(event, 'bloodSugar')}
+                value={ heartData.heartData.bloodSugar }
+                onChange={event => handleInputChange(event.target.value, 'bloodSugar')}
                 usersDefinedUnit={ 
-                    <BloodSugarUnitOptions
-                        bloodSugarUnit={ heartData.heartData.bloodSugarUnit }
-                        onChange={ handleUnitConversion }
-                    ></BloodSugarUnitOptions>
+                    <UnitOptions
+                        inputBloodSugarUnit={ heartData.heartData.bloodSugarUnit }
+                        onChange={ event => handleUnitConversion(event.target.value as keyof UnitsType, heartData.heartData.bloodSugar) }
+                    ></UnitOptions>
                 }
             />
 

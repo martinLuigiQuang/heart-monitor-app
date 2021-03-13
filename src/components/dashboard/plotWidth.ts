@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 export default function usePlotWidth (): number {
     const [ plotWidth, setPlotWidth ] = useState(document.body.clientWidth);
     
-    useEffect((): () => void => {
+    useEffect(() => {
         setPlotWidth(document.body.clientWidth);
         // set width of data plot based on the window inner width
         function handleWindowResize(): void {

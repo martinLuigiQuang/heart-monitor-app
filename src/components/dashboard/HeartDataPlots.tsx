@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import usePlotWidth from './plotWidth';
 import { Data } from '../homePage/UserInputContext';
-import { useLanguage, LanguageType } from '../languageContext/LanguageContext';
+import { useLanguage, LanguageType } from '../common/languageContext/LanguageContext';
 import { useDatasets, DatasetsType } from './DatasetsContext';
 import PlotlyChart from 'react-plotlyjs-ts';
 

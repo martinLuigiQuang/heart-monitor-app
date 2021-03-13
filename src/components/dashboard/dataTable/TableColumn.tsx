@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { Data } from '../../homePage/UserInputContext'
+import { Data } from '../../homePage/UserInputContext';
 import { useDataDisplay, DataTableDisplayType } from './DataTableContext';
 import { useDatasets, DatasetsType, useEntryDelete, DeleteEntryType, useDataTableUpdate, UpdateDataTableType } from '../DatasetsContext';
-import { useLanguage, LanguageType } from '../../languageContext/LanguageContext';
+import { useLanguage, LanguageType } from '../../common/languageContext/LanguageContext';
 
 export default function TableColumn ({ heading }: { heading: keyof Data | string }): JSX.Element {
     const heartDatasets = useDatasets() as DatasetsType[];
@@ -62,7 +62,7 @@ export default function TableColumn ({ heading }: { heading: keyof Data | string
                                     :   <Fragment>
                                             <Link to="/dashboard" onClick={() => {
                                                 setState_updatedId(set._id);
-                                                updateEntry(set._id, '2021-02-14T05:40', dummy);
+                                                updateEntry(set._id, '2021-02-14T05:40', set.heartData);
                                             }}>{ language.update }</Link> | 
                                             <Link to="/dashboard" onClick={event => {
                                                 const date: string = getDateOfEntryToBeDeleted(event);
@@ -73,7 +73,7 @@ export default function TableColumn ({ heading }: { heading: keyof Data | string
                                         </Fragment>
                                 }
                             </li>
-                        :   <Fragment></Fragment>
+                        :   <Fragment key={`hidden_${index}`}></Fragment>
                     );
                 })
             }

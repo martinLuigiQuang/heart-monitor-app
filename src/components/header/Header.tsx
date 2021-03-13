@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
-import { english, tiếng_việt } from '../languageContext/languages';
-import { useLanguage, LanguageType } from '../languageContext/LanguageContext';
-import Button from '../button/Button';
+import { english, tiếng_việt } from '../common/languageContext/languages';
+import { useLanguage, LanguageType } from '../common/languageContext/LanguageContext';
+import Button from '../common/button/Button';
 import './header.css';
 
 export default function Header() {
     const { language, toggleLanguage } = useLanguage() as LanguageType;
     
     return (
-        <header>
+        <div className="header">
             <h1>{language.title}</h1>
             <nav>
                 <ul>
@@ -20,6 +20,6 @@ export default function Header() {
                 <Button label="EN" className="" ariaLabel="choose english language" onClick={() => toggleLanguage(english)} />
                 <Button label="VN" className="" ariaLabel="choose vietnamese language" onClick={() => toggleLanguage(tiếng_việt)} />
             </div>
-        </header>
+        </div>
     );
 };

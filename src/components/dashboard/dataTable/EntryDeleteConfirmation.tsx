@@ -1,6 +1,6 @@
-import { useLanguage, LanguageType } from '../../languageContext/LanguageContext';
+import { useLanguage, LanguageType } from '../../common/languageContext/LanguageContext';
 import { useEntryDelete, DeleteEntryType } from '../DatasetsContext';
-import Button from '../../button/Button';
+import Button from '../../common/button/Button';
 
 export default function EntryDeleteConfirmation () {
     const { language } = useLanguage() as LanguageType;

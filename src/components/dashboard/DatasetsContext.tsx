@@ -15,8 +15,8 @@ export function useDatasets () {
 
 // Create and export BloodSugarUnitContext
 type BloodSugarUnitType = {
-    unit: string,
-    handleUnitConversion: (event: React.SyntheticEvent) => string  
+    bloodSugarUnit: string,
+    handleUnitConversion: (event: React.SyntheticEvent) => void  
 };
 const BloodSugarUnitContext = React.createContext<BloodSugarUnitType | null>(null);
 export function useBloodSugarUnit () {
@@ -62,7 +62,7 @@ export default function DatasetsProvider ({ children }: { children: JSX.Element 
         }
     ];
     const [ heartDatasets, setHeartDatasets ] = useState(dummy);
-    const [ unit, setBloodSugarUnit ] = useState('mmol/L');
+    const [ bloodSugarUnit, setBloodSugarUnit ] = useState('mmol/L');
     const [ dateToBeDeleted, setDateToBeDeleted ] = useState('');
     const [ idToBeDeleted, setIdToBeDeleted ] = useState('');
     const [ deleteConfirmation, setDeleteConfirmation ] = useState(false);
@@ -94,16 +94,15 @@ export default function DatasetsProvider ({ children }: { children: JSX.Element 
         return id;
     };
 
-    function handleUnitConversion(event: React.SyntheticEvent): string {
+    function handleUnitConversion(event: React.SyntheticEvent): void {
         const target = event.target as HTMLInputElement;
         if (target.value) {
-            if (unit !== target.value) {
+            if (bloodSugarUnit !== target.value) {
                 setBloodSugarUnit(target.value);
                 updateBloodSugarLevel(heartDatasets, target.value);
             };
-            return target.value;
         };
-        return unit;
+        return;
     };
 
     function updateBloodSugarLevel(datasets: DatasetsType[], newUnit: string): string {
@@ -143,7 +142,7 @@ export default function DatasetsProvider ({ children }: { children: JSX.Element 
 
     return (
         <DatasetsContext.Provider value={ heartDatasets }>
-            <BloodSugarUnitContext.Provider value={{ unit, handleUnitConversion }}>
+            <BloodSugarUnitContext.Provider value={{ bloodSugarUnit, handleUnitConversion }}>
                 <UpdateDataTableContext.Provider value={{ updateEntry, updatedId, setState_updatedId }}>
                     <DeleteEntryContext.Provider value={{ deleteEntry, dateToBeDeleted, setState_dateToBeDeleted, idToBeDeleted, setState_idToBeDeleted, deleteConfirmation, setState_deleteConfirmation }}>
                         { children }

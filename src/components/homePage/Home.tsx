@@ -1,4 +1,4 @@
-import './home.css';
+import './Home.css';
 import UserInputProvider from './UserInputContext';
 import InputForm from './InputForm';
 import InputConfirmationOverlay from './InputConfirmationOverlay';
@@ -6,10 +6,10 @@ import InputConfirmationOverlay from './InputConfirmationOverlay';
 export default function Home (): JSX.Element {
     return (
         <UserInputProvider>
-            <main>
+            <div className="homepage">
                 <InputForm />
                 <InputConfirmationOverlay />
-            </main>
+            </div>
         </UserInputProvider>
     );
 };

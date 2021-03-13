@@ -1,5 +1,8 @@
 import React, { useContext, useState } from 'react';
 import axios from 'axios';
+import UNITS, { UnitsType } from '../common/unitOptions/units';
+import { mmoll_to_mgdl, mgdl_to_mmoll } from '../common/unitOptions/units';
+import getCurrentDate from './utils';
 
 // Create and export UserInputContext 
 export type Data = {
@@ -16,8 +19,8 @@ type HeartData = {
 export type UserInputType = {
     heartData: HeartData,
     getInput: (event: React.SyntheticEvent) => void,
-    handleInputChange: (event: React.SyntheticEvent, key?: keyof Data) => HeartData,
-    handleUnitConversion: (event: React.SyntheticEvent) => string
+    handleInputChange: (value: string, key?: keyof Data) => void,
+    handleUnitConversion: (unit: keyof UnitsType, value: string) => void
 }
 const UserInputContext = React.createContext<UserInputType | undefined>(undefined);
 export function useInput () {
@@ -35,18 +38,18 @@ export function useInputVerification () {
 };
 
 export default function UserInputProvider ({ children }: { children: JSX.Element }): JSX.Element {
-    const localData: HeartData = {
-        date: new Date().toLocaleDateString(),
+    const dummy: HeartData = {
+        date: getCurrentDate(),
         heartData: {
-            systolicPressure: '0',
-            diastolicPressure: '0',
-            heartRate: '0',
-            bloodSugar: '0',
+            systolicPressure: '',
+            diastolicPressure: '',
+            heartRate: '',
+            bloodSugar: '',
             bloodSugarUnit: 'mmol/L'
         }
     }
     const [inputConfirmation, setInputConfirmation] = useState(false);
-    const [heartData, setHeartData] = useState(localData);
+    const [heartData, setHeartData] = useState(dummy);
     
     function getInput (event: React.SyntheticEvent): void {
         event.preventDefault();
@@ -66,56 +69,20 @@ export default function UserInputProvider ({ children }: { children: JSX.Element
         return;
     };
 
-    function handleUnitConversion (event: React.SyntheticEvent): string {
-        const oldUnit = heartData.heartData.bloodSugarUnit;
-        const target = event.target as HTMLInputElement;
-        const newUnit = target.value;
-        if (newUnit === 'mmol/L' || newUnit === 'mg/dL') {
-            // deep copy of original heartData object
-            const newData = {date: heartData.date, heartData: {...heartData.heartData}};
-            // update new blood sugar unit for new data object
-            newData.heartData.bloodSugarUnit = newUnit;
-            setHeartData(newData);
-            // update blood sugar level if reading exists and target.parentNode exists
-            if (heartData.heartData.bloodSugar !== '0' && target.parentNode && target.parentNode.children[1]) {
-                const targetElement = target.parentNode.children[1] as HTMLInputElement;
-                if (oldUnit === 'mg/dL') {
-                    // math calculation to round new blood sugar level to one decimal place
-                    targetElement.value = `${Math.ceil(parseFloat(targetElement.value) * 10 / 18) / 10}`;
-                    // update new blood sugar level for new data object
-                    newData.heartData.bloodSugar = targetElement.value;
-                    setHeartData(newData);
-                } else if (oldUnit === 'mmol/L') {
-                    // math calculation to round new blood sugar level to one decimal place
-                    targetElement.value = `${Math.ceil(parseFloat(targetElement.value) * 18 * 10) / 10}`;
-                    // update new blood sugar level for new data object
-                    newData.heartData.bloodSugar = targetElement.value;
-                    setHeartData(newData);
-                };
-            };
-            return newUnit;
-        } else {
-            return oldUnit;
-        };
+    function handleUnitConversion (unit: keyof UnitsType, value: string): void {
+        const newUnit = UNITS[unit];
+        const newValue = newUnit === UNITS.MMOLL ? mgdl_to_mmoll(value) : mmoll_to_mgdl(value);
+        const newData = {date: heartData.date, heartData: {...heartData.heartData, bloodSugar: newValue, bloodSugarUnit: newUnit}};
+        setHeartData(newData);
+        return;
     };
 
-    function handleInputChange (event: React.SyntheticEvent, key?: keyof Data): HeartData {
-        const target = event.target as HTMLInputElement;
-        if (target.value) {
-            // deep copy of original heartData object
-            const newData = {date: heartData.date, heartData: {...heartData.heartData}};
-            switch (key) {
-                case undefined: 
-                    newData['date'] = target.value;
-                    break;
-                default:
-                    newData.heartData[key] = target.value;                   
-            };
-            setHeartData(newData);
-            return newData;
-        } else {
-            return heartData
-        };
+    function handleInputChange (value: string, key?: keyof Data): void {
+        const newData = key === undefined 
+            ?   {date: value, heartData: {...heartData.heartData}} 
+            :   {date: heartData.date, heartData: {...heartData.heartData, [key]: value}};
+        setHeartData(newData);
+        return;
     };
 
     return (
