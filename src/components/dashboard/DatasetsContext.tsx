@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { Data } from '../homePage/UserInputContext';
+import UNITS, { UnitsType, mmoll_to_mgdl, mgdl_to_mmoll } from '../common/unitOptions/units';
 
 // Create and export DatasetsContext
 export type DatasetsType = {
@@ -14,9 +15,9 @@ export function useDatasets () {
 };
 
 // Create and export BloodSugarUnitContext
-type BloodSugarUnitType = {
+export type BloodSugarUnitType = {
     bloodSugarUnit: string,
-    handleUnitConversion: (event: React.SyntheticEvent) => void  
+    handleUnitConversion: (value: keyof UnitsType) => void  
 };
 const BloodSugarUnitContext = React.createContext<BloodSugarUnitType | null>(null);
 export function useBloodSugarUnit () {
@@ -26,7 +27,7 @@ export function useBloodSugarUnit () {
 export type UpdateDataTableType = {
     updateEntry: (id: string, date: string, data: Data) => string,
     updatedId: string,
-    setState_updatedId: (id: string) => string
+    setUpdatedId: React.Dispatch<React.SetStateAction<string>>
 };
 const UpdateDataTableContext = React.createContext<UpdateDataTableType | null>(null);
 export function useDataTableUpdate () {
@@ -36,11 +37,11 @@ export function useDataTableUpdate () {
 export type DeleteEntryType = {
     deleteEntry: (id: string) => string,
     dateToBeDeleted: string,
-    setState_dateToBeDeleted: (date: string) => string,
+    setDateToBeDeleted: React.Dispatch<React.SetStateAction<string>>,
     idToBeDeleted: string,
-    setState_idToBeDeleted: (id: string) => string,
+    setIdToBeDeleted: React.Dispatch<React.SetStateAction<string>>,
     deleteConfirmation: boolean,
-    setState_deleteConfirmation: (confirmed: boolean) => void
+    setDeleteConfirmation: React.Dispatch<React.SetStateAction<boolean>>
 };
 const DeleteEntryContext = React.createContext<DeleteEntryType | null>(null);
 export function useEntryDelete () {
@@ -71,7 +72,7 @@ export default function DatasetsProvider ({ children }: { children: JSX.Element 
     useEffect((): void => {
         // get data from database
         axios.get('http://localhost:5000/2021')
-            .then(data => updateBloodSugarLevel(data.data, 'mmol/L'))
+            .then(data => updateBloodSugarLevel(data.data, 'MMOLL' as keyof UnitsType))
             .catch( err => console.log(err) );
         return;
     }, []);
@@ -94,57 +95,32 @@ export default function DatasetsProvider ({ children }: { children: JSX.Element 
         return id;
     };
 
-    function handleUnitConversion(event: React.SyntheticEvent): void {
-        const target = event.target as HTMLInputElement;
-        if (target.value) {
-            if (bloodSugarUnit !== target.value) {
-                setBloodSugarUnit(target.value);
-                updateBloodSugarLevel(heartDatasets, target.value);
-            };
+    function handleUnitConversion(value: keyof UnitsType): void {
+        if (bloodSugarUnit !== UNITS[value]) {
+            setBloodSugarUnit(UNITS[value]);
+            updateBloodSugarLevel(heartDatasets, value);
         };
         return;
     };
 
-    function updateBloodSugarLevel(datasets: DatasetsType[], newUnit: string): string {
+    function updateBloodSugarLevel(datasets: DatasetsType[], newUnit: keyof UnitsType): void {
         const updatedData = datasets.map(set => {
-            if (set.heartData.bloodSugarUnit && set.heartData.bloodSugarUnit !== newUnit) {
-                const bloodSugar = parseFloat(set.heartData.bloodSugar);
-                set.heartData.bloodSugarUnit = newUnit;
-                newUnit === 'mmol/L' && !isNaN(bloodSugar)
-                ?   set.heartData.bloodSugar = `${Math.ceil(bloodSugar * 10 / 18) / 10}`
-                :   set.heartData.bloodSugar = `${Math.ceil(bloodSugar * 18 * 10) / 10}`;
+            const bloodSugar = parseFloat(set.heartData.bloodSugar);
+            if (!isNaN(bloodSugar) && set.heartData.bloodSugarUnit !== UNITS[newUnit]) {
+                set.heartData.bloodSugarUnit = UNITS[newUnit];
+                set.heartData.bloodSugar = UNITS[newUnit] === UNITS.MMOLL ? mgdl_to_mmoll(`${ bloodSugar }`) : mmoll_to_mgdl(`${ bloodSugar }`);
             };
             return set;
         });
         setHeartDatasets(updatedData);
-        return newUnit;
-    };
-
-    function setState_updatedId (id: string): string {
-        setUpdatedId(id);
-        return id;
-    };
-
-    function setState_dateToBeDeleted (date: string): string {
-        setDateToBeDeleted(date);
-        return date;
-    };
-
-    function setState_idToBeDeleted (id: string): string {
-        setIdToBeDeleted(id);
-        return id;
-    };
-
-    function setState_deleteConfirmation (confirmed: boolean): void {
-        setDeleteConfirmation(confirmed);
         return;
-    }
+    };
 
     return (
         <DatasetsContext.Provider value={ heartDatasets }>
             <BloodSugarUnitContext.Provider value={{ bloodSugarUnit, handleUnitConversion }}>
-                <UpdateDataTableContext.Provider value={{ updateEntry, updatedId, setState_updatedId }}>
-                    <DeleteEntryContext.Provider value={{ deleteEntry, dateToBeDeleted, setState_dateToBeDeleted, idToBeDeleted, setState_idToBeDeleted, deleteConfirmation, setState_deleteConfirmation }}>
+                <UpdateDataTableContext.Provider value={{ updateEntry, updatedId, setUpdatedId }}>
+                    <DeleteEntryContext.Provider value={{ deleteEntry, dateToBeDeleted, setDateToBeDeleted, idToBeDeleted, setIdToBeDeleted, deleteConfirmation, setDeleteConfirmation }}>
                         { children }
                     </DeleteEntryContext.Provider>
                 </UpdateDataTableContext.Provider>

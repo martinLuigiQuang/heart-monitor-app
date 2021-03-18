@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
-import usePlotWidth from './plotWidth';
+import { usePlotWidth } from './utils';
 import { Data } from '../homePage/UserInputContext';
 import { useLanguage, LanguageType } from '../common/languageContext/LanguageContext';
 import { useDatasets, DatasetsType } from './DatasetsContext';

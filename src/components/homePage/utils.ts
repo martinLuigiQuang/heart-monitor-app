@@ -1,7 +1,13 @@
+import UNITS, { mmoll_to_mgdl } from '../common/unitOptions/units';
+
 const currentDate = new Date();
 
 function convertToDoubleDigit(value: number): string {
     return value >= 10 ? '' + value : '0' + value;
+};
+
+export function convertUnits(value: string, unit: string): string {
+    return unit === UNITS.MMOLL ? value : mmoll_to_mgdl(value);
 };
 
 export default function getCurrentDate(): string {

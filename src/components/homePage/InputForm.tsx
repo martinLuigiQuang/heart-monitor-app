@@ -4,6 +4,7 @@ import Button from '../common/button/Button';
 import { useLanguage, LanguageType } from '../common/languageContext/LanguageContext';
 import { useInput, UserInputType } from './UserInputContext';
 import { UnitsType } from '../common/unitOptions/units';
+import { convertUnits } from './utils';
 
 export default function InputForm () {
     const { language } = useLanguage() as LanguageType;
@@ -42,8 +43,8 @@ export default function InputForm () {
 
             <Input 
                 className="input--bloodSugar" label={ language.bloodSugarLevel + ':' } 
-                type="number" placeholder={ heartData.heartData.bloodSugarUnit === 'mmol/L' ? `5.5` : `${5.5*18}` } 
-                min="0" max={ `${heartData.heartData.bloodSugarUnit === 'mmol/L' ? 15.5 : 15.5*18}` } step="0.1"
+                type="number" placeholder={ convertUnits('5.5', heartData.heartData.bloodSugarUnit) } 
+                min="0" max={ convertUnits('15.5', heartData.heartData.bloodSugarUnit) } step="0.1"
                 value={ heartData.heartData.bloodSugar }
                 onChange={event => handleInputChange(event.target.value, 'bloodSugar')}
                 usersDefinedUnit={ 

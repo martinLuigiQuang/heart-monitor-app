@@ -21,7 +21,7 @@ export default function DataTable () {
                 {
                     heartDataHeadings.map(heading => {
                         return (
-                            <ul className="dataEntry" key={heading ? heading : "controlPanel"}>
+                            <ul className={`dataEntry--${ heading }`} key={heading ? heading : "controlPanel"}>
                                 <li className="headings">{ heading ? language[heading as keyof Language] : null }</li>
                                 <TableColumn heading={ heading as keyof Data} />
                             </ul>

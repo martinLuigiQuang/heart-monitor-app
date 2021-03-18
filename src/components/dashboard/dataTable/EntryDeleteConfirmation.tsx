@@ -4,7 +4,7 @@ import Button from '../../common/button/Button';
 
 export default function EntryDeleteConfirmation () {
     const { language } = useLanguage() as LanguageType;
-    const { deleteConfirmation, setState_deleteConfirmation, dateToBeDeleted, setState_dateToBeDeleted, idToBeDeleted, setState_idToBeDeleted, deleteEntry } = useEntryDelete() as DeleteEntryType;
+    const { deleteConfirmation, setDeleteConfirmation, dateToBeDeleted, setDateToBeDeleted, idToBeDeleted, setIdToBeDeleted, deleteEntry } = useEntryDelete() as DeleteEntryType;
    
     return (
         <div className={`transparent ${ deleteConfirmation ? '' : 'hidden' }`}>
@@ -13,14 +13,14 @@ export default function EntryDeleteConfirmation () {
                 <div className="buttonsContainer">
                     <Button 
                         ariaLabel="cancel entry deletion" label={ language.buttonCancel } 
-                        onClick={ () => setState_deleteConfirmation(false) }
+                        onClick={ () => setDeleteConfirmation(false) }
                     />
                     <Button 
                         ariaLabel="proceed with entry deletion" label={ language.buttonOK } 
                         onClick={() => { 
-                            setState_deleteConfirmation(false);
-                            setState_dateToBeDeleted('');
-                            setState_idToBeDeleted('');
+                            setDeleteConfirmation(false);
+                            setDateToBeDeleted('');
+                            setIdToBeDeleted('');
                             deleteEntry(idToBeDeleted);
                         }}
                     />
