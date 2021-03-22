@@ -9,7 +9,6 @@ import { convertUnits } from './utils';
 export default function InputForm () {
     const { language } = useLanguage() as LanguageType;
     const { heartData, getInput, handleInputChange, handleUnitConversion } = useInput() as UserInputType ;
-
     return (
         <form className="dataInput wrapper" onSubmit={ getInput }>
 

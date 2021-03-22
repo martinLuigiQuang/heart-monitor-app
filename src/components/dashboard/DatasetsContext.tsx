@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { Data } from '../homePage/UserInputContext';
 import UNITS, { UnitsType, mmoll_to_mgdl, mgdl_to_mmoll } from '../common/unitOptions/units';
+import { useYearOption, YearOptionType } from '../common/yearOptionContext/YearOptionContext';
 
 // Create and export DatasetsContext
 export type DatasetsType = {
@@ -24,6 +25,7 @@ export function useBloodSugarUnit () {
     return useContext(BloodSugarUnitContext);
 };
 
+// Create and export UpdateDataTableContext
 export type UpdateDataTableType = {
     updateEntry: (id: string, date: string, data: Data) => string,
     updatedId: string,
@@ -34,6 +36,7 @@ export function useDataTableUpdate () {
     return useContext(UpdateDataTableContext);
 };
 
+// Create and export DeleteEntryContext
 export type DeleteEntryType = {
     deleteEntry: (id: string) => string,
     dateToBeDeleted: string,
@@ -68,15 +71,17 @@ export default function DatasetsProvider ({ children }: { children: JSX.Element 
     const [ idToBeDeleted, setIdToBeDeleted ] = useState('');
     const [ deleteConfirmation, setDeleteConfirmation ] = useState(false);
     const [ updatedId, setUpdatedId ] = useState('');
-
-    useEffect((): void => {
-        // get data from database
-        axios.get('http://localhost:5000/2021')
+    
+    // Get year option to display corresponding data
+    const { yearOption } = useYearOption() as YearOptionType;
+    useEffect(() => getData(yearOption));
+    function getData(year: string): void {
+        axios.get(`http://localhost:5000/${year}`)
             .then(data => updateBloodSugarLevel(data.data, 'MMOLL' as keyof UnitsType))
             .catch( err => console.log(err) );
         return;
-    }, []);
-
+    };
+    
     function deleteEntry(id: string): string {
         axios.delete(`http://localhost:5000/delete/${id}`)
             .then(data => setHeartDatasets(heartDatasets.filter(set => set._id !== data.data._id)))

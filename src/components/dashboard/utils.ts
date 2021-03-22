@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+export const currentYear = (new Date()).getFullYear();
 
 export function usePlotWidth (): number {
     const [ plotWidth, setPlotWidth ] = useState(document.body.clientWidth);
@@ -30,4 +31,8 @@ export function getDateToBeDeleted (offsetTop: number, dateEntries: Element | nu
         return `${ date } ${ preposition } ${ time }`;
     };
     return '';
+};
+
+export function getYearOptions(): string[] {
+    return [`${currentYear}`, `${currentYear - 1}`, `${currentYear - 2}`];
 };

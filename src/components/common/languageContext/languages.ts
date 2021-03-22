@@ -16,7 +16,8 @@ export type Language = {
     showMore: string,
     showLess: string,
     deleteConfirmation: string,
-    timeAt: string
+    timeAt: string,
+    yearSelection: string
 };
 
 export const english: Language = {
@@ -37,7 +38,8 @@ export const english: Language = {
     showMore: 'show more',
     showLess: 'show less',
     deleteConfirmation: 'Do you want to delete the data entry for',
-    timeAt: 'at'
+    timeAt: 'at',
+    yearSelection: 'Select a year'
 };
 
 export const tiếng_việt: Language = {
@@ -58,5 +60,6 @@ export const tiếng_việt: Language = {
     showMore: 'xem thêm',
     showLess: 'thu lại',
     deleteConfirmation: 'Bạn có muốn xóa dữ liệu cho ngày',
-    timeAt: 'lúc'
+    timeAt: 'lúc',
+    yearSelection: 'Chọn năm'
 };
