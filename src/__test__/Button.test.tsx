@@ -5,7 +5,7 @@ import Button, { ButtonAttributes } from "../components/common/button/Button";
 describe(`<Button />`, () => {
   test("should display a button with a label 'test'", async () => {
     const { findByTestId } = testRenderButton();
-    const testButton: HTMLButtonElement = await findByTestId('button') as HTMLButtonElement;
+    const testButton = await findByTestId('button') as HTMLButtonElement;
     // expect(testButton).toBeInTheDocument();
     console.log(expect(testButton))
     // expect(testButton).toHaveAttribute('aria-label', 'test');

@@ -27,7 +27,7 @@ export function useBloodSugarUnit () {
 
 // Create and export UpdateDataTableContext
 export type UpdateDataTableType = {
-    updateEntry: (id: string, date: string, data: Data) => string,
+    updateEntry: (id: string, date: string, data: Data) => void,
     updatedId: string,
     setUpdatedId: React.Dispatch<React.SetStateAction<string>>
 };
@@ -38,7 +38,7 @@ export function useDataTableUpdate () {
 
 // Create and export DeleteEntryContext
 export type DeleteEntryType = {
-    deleteEntry: (id: string) => string,
+    deleteEntry: (id: string) => void,
     dateToBeDeleted: string,
     setDateToBeDeleted: React.Dispatch<React.SetStateAction<string>>,
     idToBeDeleted: string,
@@ -74,7 +74,7 @@ export default function DatasetsProvider ({ children }: { children: JSX.Element 
     
     // Get year option to display corresponding data
     const { yearOption } = useYearOption() as YearOptionType;
-    useEffect(() => getData(yearOption));
+    useEffect(() => getData(yearOption), [yearOption]);
     function getData(year: string): void {
         axios.get(`http://localhost:5000/${year}`)
             .then(data => updateBloodSugarLevel(data.data, 'MMOLL' as keyof UnitsType))
@@ -82,14 +82,16 @@ export default function DatasetsProvider ({ children }: { children: JSX.Element 
         return;
     };
     
-    function deleteEntry(id: string): string {
+    // Delete data entry with the identified id
+    function deleteEntry(id: string): void {
         axios.delete(`http://localhost:5000/delete/${id}`)
             .then(data => setHeartDatasets(heartDatasets.filter(set => set._id !== data.data._id)))
             .catch(err => console.log(err));
-        return id;
+        return;
     };
 
-    function updateEntry(id: string, date: string, data: Data): string {
+    // Update identified data entry with new data
+    function updateEntry(id: string, date: string, data: Data): void {
         const updatedDoc = {
             date: date,
             heartData: data
@@ -97,9 +99,10 @@ export default function DatasetsProvider ({ children }: { children: JSX.Element 
         axios.post(`http://localhost:5000/update/${id}`, updatedDoc)
             .then(data => setHeartDatasets([...heartDatasets, data.data].filter(set => set._id !== id)))
             .catch(err => console.log(err));
-        return id;
+        return;
     };
 
+    // Convert blood sugar level based on user's choice of unit
     function handleUnitConversion(value: keyof UnitsType): void {
         if (bloodSugarUnit !== UNITS[value]) {
             setBloodSugarUnit(UNITS[value]);
@@ -108,12 +111,16 @@ export default function DatasetsProvider ({ children }: { children: JSX.Element 
         return;
     };
 
+    // Convert and set blood sugar level and unit
     function updateBloodSugarLevel(datasets: DatasetsType[], newUnit: keyof UnitsType): void {
         const updatedData = datasets.map(set => {
             const bloodSugar = parseFloat(set.heartData.bloodSugar);
             if (!isNaN(bloodSugar) && set.heartData.bloodSugarUnit !== UNITS[newUnit]) {
+                console.log(bloodSugar)
                 set.heartData.bloodSugarUnit = UNITS[newUnit];
-                set.heartData.bloodSugar = UNITS[newUnit] === UNITS.MMOLL ? mgdl_to_mmoll(`${ bloodSugar }`) : mmoll_to_mgdl(`${ bloodSugar }`);
+                set.heartData.bloodSugar = UNITS[newUnit] === UNITS.MMOLL 
+                    ? mgdl_to_mmoll(`${ bloodSugar }`) 
+                    : mmoll_to_mgdl(`${ bloodSugar }`);
             };
             return set;
         });

@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Language, english } from './languages';
 
+// Create and export the Language Context
 export type LanguageType = {
     language: Language,
     toggleLanguage: (language: Language) => Language

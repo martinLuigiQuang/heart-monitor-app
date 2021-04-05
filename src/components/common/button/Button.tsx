@@ -6,7 +6,8 @@ export type ButtonAttributes = {
     ariaLabel: string, 
     className?: string, 
     onClick?: MouseEventHandler<HTMLButtonElement>, 
-    disabled?: boolean
+    disabled?: boolean,
+    [key: string]: any
 };
 
 export default function Button ({ label, ariaLabel, className, onClick, disabled }: ButtonAttributes): JSX.Element {

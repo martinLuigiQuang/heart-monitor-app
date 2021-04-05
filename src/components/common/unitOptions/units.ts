@@ -1,9 +1,9 @@
 export function mmoll_to_mgdl(value: string): string {
-    return value ? `${Math.ceil(parseFloat(value) * 18 * 10) / 10}` : '';
+    return value ? `${(parseFloat(value) * 18).toFixed(0)}` : '';
 };
 
 export function mgdl_to_mmoll(value: string): string {
-    return value ? `${Math.ceil(parseFloat(value) * 10 / 18) / 10}` : '';
+    return value ? `${(parseFloat(value) / 18).toFixed(1)}` : '';
 };
 
 export type UnitsType = {

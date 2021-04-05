@@ -6,15 +6,15 @@ import getCurrentDate from './utils';
 
 // Create and export UserInputContext 
 export type Data = {
-    'systolicPressure': string,
-    'diastolicPressure': string,
-    'heartRate': string,
-    'bloodSugar': string,
-    'bloodSugarUnit': string
+    systolicPressure: string,
+    diastolicPressure: string,
+    heartRate: string,
+    bloodSugar: string,
+    bloodSugarUnit: string
 }
 type HeartData = {
-    'date': string,
-    'heartData': Data
+    date: string,
+    heartData: Data
 };
 export type UserInputType = {
     heartData: HeartData,
@@ -51,12 +51,14 @@ export default function UserInputProvider ({ children }: { children: JSX.Element
     const [inputConfirmation, setInputConfirmation] = useState(false);
     const [heartData, setHeartData] = useState(dummy);
     
+    // Prevent default form submission and open input confirmation overlay
     function getInput (event: React.SyntheticEvent): void {
         event.preventDefault();
         setInputConfirmation(true);
         return;
     };
 
+    // Verify and post user's input to MongoDB then close confirmation overlay; if user cancels, only close the confirmation overlay 
     function verifyInput (verified: boolean, date?: string, data?: Data): void {
         if (verified && date && data) {
             const mongoDBDoc: HeartData = {
@@ -69,6 +71,7 @@ export default function UserInputProvider ({ children }: { children: JSX.Element
         return;
     };
 
+    // Convert blood sugar level according to user's choice of unitas defined in UNITS
     function handleUnitConversion (unit: keyof UnitsType, value: string): void {
         const newUnit = UNITS[unit];
         const newValue = newUnit === UNITS.MMOLL ? mgdl_to_mmoll(value) : mmoll_to_mgdl(value);
@@ -77,6 +80,7 @@ export default function UserInputProvider ({ children }: { children: JSX.Element
         return;
     };
 
+    // Record new user's input
     function handleInputChange (value: string, key?: keyof Data): void {
         const newData = key === undefined 
             ?   {date: value, heartData: {...heartData.heartData}} 

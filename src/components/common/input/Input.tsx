@@ -14,6 +14,7 @@ export type InputAttributes = {
     step?: string,
     usersDefinedUnit?: JSX.Element,
     unit?: string
+    [key: string]: any
 }
 
 export default function Input ({ className, label, type, name, placeholder, value, onChange, unit, checked, min, max, step, usersDefinedUnit }: InputAttributes): JSX.Element {
