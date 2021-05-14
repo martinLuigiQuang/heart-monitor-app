@@ -9,10 +9,13 @@ function convertToDoubleDigit(value: number): string {
 };
 
 export function getYearOptions(): string[] {
-    return [`${currentYear}-${convertToDoubleDigit(currentMonth)}`, 
-            `${currentYear}-${convertToDoubleDigit(currentMonth - 1)}`, 
-            `${currentYear}-${convertToDoubleDigit(currentMonth - 2)}`,
-            `${currentYear}-${convertToDoubleDigit(currentMonth - 3)}`];
+    return [
+        `${currentYear}-${convertToDoubleDigit(currentMonth)}`, 
+        `${currentYear}-${convertToDoubleDigit(currentMonth - 1)}`, 
+        `${currentYear}-${convertToDoubleDigit(currentMonth - 2)}`,
+        `${currentYear}-${convertToDoubleDigit(currentMonth - 3)}`,
+        `${currentYear}-${convertToDoubleDigit(currentMonth - 4)}`,
+    ];
 };
 
 // Create and export YearOptionContext
@@ -26,7 +29,7 @@ export function useYearOption () {
 };
 
 export default function YearOptionProvider({ children }: {children: JSX.Element}): JSX.Element {
-    const [ yearOption, setYearOption ] = useState(`${getYearOptions()[0]}`);
+    const [ yearOption, setYearOption ] = useState(`${getYearOptions()[4]}`);
 
     return (
         <YearOptionContext.Provider value={{ yearOption, setYearOption }}>

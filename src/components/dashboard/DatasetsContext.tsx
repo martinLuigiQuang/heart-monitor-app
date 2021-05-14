@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { PORT_8080, PORT_5000 } from '../../host/port';
 import axios from 'axios';
 import { Data } from '../homePage/UserInputContext';
 import UNITS, { UnitsType, mmoll_to_mgdl, mgdl_to_mmoll } from '../common/unitOptions/units';
@@ -6,7 +7,8 @@ import { useYearOption, YearOptionType } from '../common/yearOptionContext/YearO
 
 // Create and export DatasetsContext
 export type DatasetsType = {
-    _id: string,
+    id?: string,
+    _id?: string,
     date: string,
     heartData: Data
 };
@@ -52,9 +54,10 @@ export function useEntryDelete () {
 };
 
 export default function DatasetsProvider ({ children }: { children: JSX.Element }): JSX.Element {
+    const PORT = PORT_5000;
     const dummy: DatasetsType[] = [
         {
-            _id: '-',
+            id: '-',
             date: '-',
             heartData: {
                 systolicPressure: '-',
@@ -76,7 +79,7 @@ export default function DatasetsProvider ({ children }: { children: JSX.Element 
     const { yearOption } = useYearOption() as YearOptionType;
     useEffect(() => getData(yearOption), [yearOption]);
     function getData(year: string): void {
-        axios.get(`http://localhost:5000/${year}`)
+        axios.get(`http://localhost:${PORT}/${year}`)
             .then(data => updateBloodSugarLevel(data.data, 'MMOLL' as keyof UnitsType))
             .catch( err => console.log(err) );
         return;
@@ -84,8 +87,8 @@ export default function DatasetsProvider ({ children }: { children: JSX.Element 
     
     // Delete data entry with the identified id
     function deleteEntry(id: string): void {
-        axios.delete(`http://localhost:5000/delete/${id}`)
-            .then(data => setHeartDatasets(heartDatasets.filter(set => set._id !== data.data._id)))
+        axios.delete(`http://localhost:${PORT}/?id=${id}`)
+            .then(data => setHeartDatasets(heartDatasets.filter(set => set.id !== data.data.id)))
             .catch(err => console.log(err));
         return;
     };
@@ -96,8 +99,8 @@ export default function DatasetsProvider ({ children }: { children: JSX.Element 
             date: date,
             heartData: data
         };
-        axios.post(`http://localhost:5000/update/${id}`, updatedDoc)
-            .then(data => setHeartDatasets([...heartDatasets, data.data].filter(set => set._id !== id)))
+        axios.post(`http://localhost:${PORT}/update/${id}`, updatedDoc)
+            .then(data => setHeartDatasets([...heartDatasets, data.data].filter(set => set.id !== id)))
             .catch(err => console.log(err));
         return;
     };
@@ -116,7 +119,7 @@ export default function DatasetsProvider ({ children }: { children: JSX.Element 
         const updatedData = datasets.map(set => {
             const bloodSugar = parseFloat(set.heartData.bloodSugar);
             if (!isNaN(bloodSugar) && set.heartData.bloodSugarUnit !== UNITS[newUnit]) {
-                console.log(bloodSugar)
+                // console.log(bloodSugar)
                 set.heartData.bloodSugarUnit = UNITS[newUnit];
                 set.heartData.bloodSugar = UNITS[newUnit] === UNITS.MMOLL 
                     ? mgdl_to_mmoll(`${ bloodSugar }`) 

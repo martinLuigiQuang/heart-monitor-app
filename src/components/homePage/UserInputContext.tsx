@@ -65,6 +65,7 @@ export default function UserInputProvider ({ children }: { children: JSX.Element
                 date: date,
                 heartData: data
             };
+            console.log(mongoDBDoc)
             axios.post('http://localhost:5000/', mongoDBDoc).catch(err => console.log(err));
         };
         setInputConfirmation(false);

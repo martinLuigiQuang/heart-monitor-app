@@ -8,7 +8,7 @@ import { getDateToBeDeleted } from '../utils';
 
 export default function TableColumn ({ heading }: { heading: keyof Data | string }): JSX.Element {
     const dateEntries = document.querySelector('.dataEntry--date');
-    const heartDatasets = useDatasets() as DatasetsType[];
+    const heartDatasets = useDatasets() as DatasetsType[] ;
     const { language } = useLanguage() as LanguageType;
     const { numOfEntries, addDecimalPlace } = useDataDisplay() as DataTableDisplayType;
     const { updateEntry, setUpdatedId } = useDataTableUpdate() as UpdateDataTableType;
@@ -26,9 +26,10 @@ export default function TableColumn ({ heading }: { heading: keyof Data | string
         <Fragment>
             {
                 heartDatasets.map( (set, index) => {
+                    const ID = set.id ? set.id : set._id + '';
                     return (
                         index < numOfEntries
-                        ?   <li key={`${set._id}_${heading ? heading : "controlPanel"}`}>
+                        ?   <li key={`${ID}_${heading ? heading : "controlPanel"}`}>
                                 { 
                                     heading
                                     ?   heading === 'date'
@@ -45,14 +46,14 @@ export default function TableColumn ({ heading }: { heading: keyof Data | string
                                             :   '-'
                                     :   <Fragment>
                                             <Link to="/dashboard" onClick={() => {
-                                                setUpdatedId(set._id);
-                                                updateEntry(set._id, '2021-02-14T05:40', set.heartData);
+                                                setUpdatedId(ID);
+                                                updateEntry(ID, '2021-02-14T05:40', set.heartData);
                                             }}>{ language.update }</Link> | 
                                             <Link to="/dashboard" onClick={event => {
                                                 const position: number = (event.target as HTMLElement).offsetTop;
                                                 const date: string = getDateToBeDeleted(position, dateEntries, language.timeAt);
                                                 setDateToBeDeleted(date);
-                                                setIdToBeDeleted(set._id);
+                                                setIdToBeDeleted(ID);
                                                 setDeleteConfirmation(true);
                                             }}>{ language.delete }</Link>
                                         </Fragment>
