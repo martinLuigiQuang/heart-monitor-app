@@ -2,13 +2,14 @@ import Input from '../common/input/Input';
 import UnitOptions from '../common/unitOptions/UnitOptions';
 import Button from '../common/button/Button';
 import { useLanguage, LanguageType } from '../common/languageContext/LanguageContext';
-import { useInput, UserInputType } from './UserInputContext';
-import { UnitsType } from '../common/unitOptions/units';
+import { useInput } from './UserInputContext';
+import UserInput from '../../models/interfaces/UserInput';
+import UNITS, { UnitsType } from '../common/unitOptions/units';
 import { convertUnits } from './utils';
 
 export default function InputForm () {
     const { language } = useLanguage() as LanguageType;
-    const { heartData, getInput, handleInputChange, handleUnitConversion } = useInput() as UserInputType ;
+    const { heartData, getInput, handleInputChange, handleUnitConversion } = useInput() as UserInput;
     return (
         <form className="dataInput wrapper" onSubmit={ getInput }>
 
@@ -49,7 +50,7 @@ export default function InputForm () {
                 usersDefinedUnit={ 
                     <UnitOptions
                         inputBloodSugarUnit={ heartData.heartData.bloodSugarUnit }
-                        onChange={ event => handleUnitConversion(event.target.value as keyof UnitsType, heartData.heartData.bloodSugar) }
+                        onChange={ event => handleUnitConversion(UNITS[event.target.value as keyof UnitsType], heartData.heartData.bloodSugar) }
                     ></UnitOptions>
                 }
             />

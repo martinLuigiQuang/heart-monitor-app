@@ -1,12 +1,14 @@
 import Confirmation from '../common/confirmation/Confirmation';
 import Button from '../common/button/Button';
 import { useLanguage, LanguageType } from '../common/languageContext/LanguageContext';
-import { useInput, UserInputType, useInputVerification, InputVerificationType } from './UserInputContext';
+import { useInput, useInputVerification} from './UserInputContext';
+import UserInput from '../../models/interfaces/UserInput';
+import InputVerification from '../../models/interfaces/InputVerification';
 
 export default function InputConfirmationOverlay () {
     const { language } = useLanguage() as LanguageType;
-    const { heartData } = useInput() as UserInputType;
-    const { inputConfirmation, verifyInput } = useInputVerification() as InputVerificationType;
+    const { heartData } = useInput() as UserInput;
+    const { inputConfirmation, verifyInput } = useInputVerification() as InputVerification;
     
     return (
         <form className={`overlayConfirmation wrapper ${inputConfirmation ? '' : 'hidden'}`} onSubmit={event => event.preventDefault()}>
