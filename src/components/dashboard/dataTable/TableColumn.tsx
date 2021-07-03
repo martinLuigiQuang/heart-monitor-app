@@ -1,18 +1,23 @@
 import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { Data } from '../../homePage/UserInputContext';
-import { useDataDisplay, DataTableDisplayType } from './DataTableContext';
-import { useDatasets, DatasetsType, useEntryDelete, DeleteEntryType, useDataTableUpdate, UpdateDataTableType } from '../DatasetsContext';
-import { useLanguage, LanguageType } from '../../common/languageContext/LanguageContext';
+import Data from '../../../models/types/Data';
+import { useDataDisplay } from './DataTableContext';
+import DataTable from '../../../models/interfaces/DataTable';
+import { useDatasets, useEntryDelete, useDataTableUpdate } from '../DatasetsContext';
+import Dataset from '../../../models/types/Dataset';
+import UpdateDataTable from '../../../models/interfaces/UpdateDataTable';
+import DeleteEntry from '../../../models/interfaces/DeleteEntry';
+import { useLanguage } from '../../common/languageContext/LanguageContext';
+import Language from '../../../models/interfaces/Language';
 import { getDateToBeDeleted } from '../utils';
 
 export default function TableColumn ({ heading }: { heading: keyof Data | string }): JSX.Element {
     const dateEntries = document.querySelector('.dataEntry--date');
-    const heartDatasets = useDatasets() as DatasetsType[] ;
-    const { language } = useLanguage() as LanguageType;
-    const { numOfEntries, addDecimalPlace } = useDataDisplay() as DataTableDisplayType;
-    const { updateEntry, setUpdatedId } = useDataTableUpdate() as UpdateDataTableType;
-    const { setDateToBeDeleted, setIdToBeDeleted, setDeleteConfirmation } = useEntryDelete() as DeleteEntryType;
+    const heartDatasets = useDatasets() as Dataset[] ;
+    const { language } = useLanguage() as Language;
+    const { numOfEntries, addDecimalPlace } = useDataDisplay() as DataTable;
+    const { updateEntry, setUpdatedId } = useDataTableUpdate() as UpdateDataTable;
+    const { setDateToBeDeleted, setIdToBeDeleted, setDeleteConfirmation } = useEntryDelete() as DeleteEntry;
     
     // const dummy: Data = {
     //     'systolicPressure': '110',

@@ -1,18 +1,22 @@
 import { Fragment } from 'react';
-import { Data } from '../../homePage/UserInputContext';
-import { Language } from '../../common/languageContext/languages';
-import { useLanguage, LanguageType } from '../../common/languageContext/LanguageContext';
-import { useDatasets, DatasetsType, useEntryDelete, DeleteEntryType } from '../DatasetsContext';
-import { useDataDisplay, DataTableDisplayType } from './DataTableContext';
+import Data from '../../../models/types/Data';
+import Language from '../../../models/types/Language';
+import { useLanguage } from '../../common/languageContext/LanguageContext';
+import LanguageInterface from '../../../models/interfaces/Language';
+import { useDatasets, useEntryDelete } from '../DatasetsContext';
+import Dataset from '../../../models/types/Dataset';
+import DeleteEntry from '../../../models/interfaces/DeleteEntry';
+import { useDataDisplay } from './DataTableContext';
+import DataTable from '../../../models/interfaces/DataTable';
 import TableColumn from './TableColumn';
 import EntryDeleteConfirmation from './EntryDeleteConfirmation';
 import Button from '../../common/button/Button';
 
 export default function DataTable () {
-    const heartDatasets = useDatasets() as DatasetsType[];
-    const { language } = useLanguage() as LanguageType;
-    const { numOfEntries, handleShowMore } = useDataDisplay() as DataTableDisplayType;
-    const { idToBeDeleted, dateToBeDeleted } = useEntryDelete() as DeleteEntryType;
+    const heartDatasets = useDatasets() as Dataset[];
+    const { language } = useLanguage() as LanguageInterface;
+    const { numOfEntries, handleShowMore } = useDataDisplay() as DataTable;
+    const { idToBeDeleted, dateToBeDeleted } = useEntryDelete() as DeleteEntry;
     const heartDataHeadings: string[] = ['date', 'systolicPressure', 'diastolicPressure', 'heartRate', 'bloodSugarLevel', ''];
 
     return (

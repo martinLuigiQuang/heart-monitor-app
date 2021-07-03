@@ -1,16 +1,18 @@
 import { Fragment } from 'react';
 import { usePlotWidth } from './utils';
-import { Data } from '../homePage/UserInputContext';
-import { useLanguage, LanguageType } from '../common/languageContext/LanguageContext';
-import { useDatasets, DatasetsType } from './DatasetsContext';
+import Data from '../../models/types/Data';
+import { useLanguage } from '../common/languageContext/LanguageContext';
+import Language from '../../models/interfaces/Language';
+import { useDatasets } from './DatasetsContext';
+import Dataset from '../../models/types/Dataset';
 import PlotlyChart from 'react-plotlyjs-ts';
 
 export default function HeartDataPlots (): JSX.Element {
-    const { language } = useLanguage() as LanguageType;
-    const heartDatasets = useDatasets() as DatasetsType[];
+    const { language } = useLanguage() as Language;
+    const heartDatasets = useDatasets() as Dataset[];
     const plotWidth = usePlotWidth();
 
-    function checkDataExistence(set: DatasetsType, key: keyof Data): boolean {
+    function checkDataExistence(set: Dataset, key: keyof Data): boolean {
         return set.heartData[key] !== undefined && set.heartData[key] !== null && set.heartData[key] !== '0';
     };
 

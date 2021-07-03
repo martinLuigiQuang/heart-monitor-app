@@ -1,23 +1,9 @@
 import './Input.css';
+import InputAttributes from '../../../models/types/InputAttributes';
 
-export type InputAttributes = {
-    type: string,
-    label: string,
-    value?: string,
-    className?: string,
-    name?: string,
-    placeholder?: string,
-    onChange?: React.ChangeEventHandler<HTMLInputElement>
-    checked?: boolean,
-    min?: string,
-    max?: string,
-    step?: string,
-    usersDefinedUnit?: JSX.Element,
-    unit?: string
-    [key: string]: any
-}
-
-export default function Input ({ className, label, type, name, placeholder, value, onChange, unit, checked, min, max, step, usersDefinedUnit }: InputAttributes): JSX.Element {
+export default function Input (props: InputAttributes): JSX.Element {
+    const { className, label, type, name, placeholder, value, onChange, 
+            unit, checked, min, max, step, usersDefinedUnit } = props;
     return (
         <div key={ className } className={ className }>
             <label htmlFor={ className }>{ label }</label>

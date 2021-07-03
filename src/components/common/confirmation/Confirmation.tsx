@@ -1,11 +1,6 @@
-export type ConfirmationType = {
-    className: string,
-    label: string,
-    content: string,
-    unit?: string
-};
+import Confirmation from '../../../models/types/Confirmation';
 
-export default function Confirmation ({ className, label, content, unit }: ConfirmationType): JSX.Element {
+export default function Confirmation ({ className, label, content, unit }: Confirmation): JSX.Element {
     return (
         <div className={ className }>
             <p>{ label }</p>

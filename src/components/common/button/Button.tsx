@@ -1,14 +1,5 @@
-import { MouseEventHandler } from 'react';
+import ButtonAttributes from "../../../models/types/ButtonAttributes";
 // import './button.css';
-
-export type ButtonAttributes = {
-    label: string, 
-    ariaLabel: string, 
-    className?: string, 
-    onClick?: MouseEventHandler<HTMLButtonElement>, 
-    disabled?: boolean,
-    [key: string]: any
-};
 
 export default function Button ({ label, ariaLabel, className, onClick, disabled }: ButtonAttributes): JSX.Element {
     return (

@@ -1,12 +1,5 @@
 import './Select.css';
-
-export type SelectAttributes = {
-    className: string,
-    options: string[],
-    value: string,
-    label?: string,
-    onChange?: React.ChangeEventHandler<HTMLSelectElement>
-};
+import SelectAttributes from '../../../models/interfaces/SelectAttributes';
 
 export default function Select ({className, options, value, label, onChange}: SelectAttributes): JSX.Element {
     return (

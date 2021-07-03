@@ -1,10 +1,12 @@
-import { useLanguage, LanguageType } from '../../common/languageContext/LanguageContext';
-import { useEntryDelete, DeleteEntryType } from '../DatasetsContext';
+import { useLanguage } from '../../common/languageContext/LanguageContext';
+import Language from '../../../models/interfaces/Language';
+import { useEntryDelete } from '../DatasetsContext';
+import DeleteEntry from '../../../models/interfaces/DeleteEntry';
 import Button from '../../common/button/Button';
 
 export default function EntryDeleteConfirmation () {
-    const { language } = useLanguage() as LanguageType;
-    const { deleteConfirmation, setDeleteConfirmation, dateToBeDeleted, setDateToBeDeleted, idToBeDeleted, setIdToBeDeleted, deleteEntry } = useEntryDelete() as DeleteEntryType;
+    const { language } = useLanguage() as Language;
+    const { deleteConfirmation, setDeleteConfirmation, dateToBeDeleted, setDateToBeDeleted, idToBeDeleted, setIdToBeDeleted, deleteEntry } = useEntryDelete() as DeleteEntry;
    
     return (
         <div className={`transparent ${ deleteConfirmation ? '' : 'hidden' }`}>

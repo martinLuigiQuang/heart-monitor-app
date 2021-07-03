@@ -1,18 +1,14 @@
 import React, { useState, useContext } from 'react';
-import { DatasetsType } from '../DatasetsContext';
+import Dataset from '../../../models/types/Dataset';
+import DataTable from '../../../models/interfaces/DataTable';
 
 // Create and export Data Table Display Context
-export type DataTableDisplayType = {
-    numOfEntries: number,
-    addDecimalPlace: (value: number) => string,
-    handleShowMore: (datasets: DatasetsType[]) => number
-};
-const DataTableDisplayContext = React.createContext<DataTableDisplayType | undefined>(undefined);
+const DataTableContext = React.createContext<DataTable | undefined>(undefined);
 export function useDataDisplay () {
-    return useContext(DataTableDisplayContext);
+    return useContext(DataTableContext);
 };
 
-export default function DataTableDisplayProvider ({ children }: { children: JSX.Element }): JSX.Element {
+export default function DataTableProvider ({ children }: { children: JSX.Element }): JSX.Element {
     const [ numOfEntries, setNumOfEntries ] = useState(10);
     
     // Add one decimal place to whole integers
@@ -22,14 +18,14 @@ export default function DataTableDisplayProvider ({ children }: { children: JSX.
     };
 
     // Show more heart data records
-    function handleShowMore(datasets: DatasetsType[]): number {
+    function handleShowMore(datasets: Dataset[]): number {
         numOfEntries <= 10 ? setNumOfEntries(datasets.length) : setNumOfEntries(10);
         return datasets.length;
     };
 
     return (
-        <DataTableDisplayContext.Provider value={{ numOfEntries, addDecimalPlace, handleShowMore }}>
+        <DataTableContext.Provider value={{ numOfEntries, addDecimalPlace, handleShowMore }}>
             { children }
-        </DataTableDisplayContext.Provider>
+        </DataTableContext.Provider>
     );
 };

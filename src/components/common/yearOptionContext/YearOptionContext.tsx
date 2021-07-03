@@ -1,4 +1,6 @@
 import React, { useContext, useState } from "react";
+import YearOption from "../../../models/interfaces/YearOption";
+
 const current = new Date();
 const currentYear = current.getFullYear();
 const currentMonth = current.getMonth() + 1;
@@ -19,11 +21,7 @@ export function getYearOptions(): string[] {
 };
 
 // Create and export YearOptionContext
-export type YearOptionType = {
-    yearOption: string
-    setYearOption: React.Dispatch<React.SetStateAction<string>>
-};
-const YearOptionContext = React.createContext<YearOptionType | undefined>(undefined);
+const YearOptionContext = React.createContext<YearOption | undefined>(undefined);
 export function useYearOption () {
     return useContext(YearOptionContext);
 };

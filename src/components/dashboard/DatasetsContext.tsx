@@ -1,61 +1,42 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { PORT_8080, PORT_5000 } from '../../host/port';
 import axios from 'axios';
-import { Data } from '../homePage/UserInputContext';
-import UNITS, { UnitsType, mmoll_to_mgdl, mgdl_to_mmoll } from '../common/unitOptions/units';
+import Data from '../../models/types/Data';
+import UNITS, { mmoll_to_mgdl, mgdl_to_mmoll } from '../common/unitOptions/units';
+import Units from '../../models/types/Units';
+import BloodSugarUnit from '../../models/interfaces/BloodSugarUnit';
 import { useYearOption, YearOptionType } from '../common/yearOptionContext/YearOptionContext';
+import Dataset from '../../models/types/Dataset';
+import UpdateDataTable from '../../models/interfaces/UpdateDataTable';
+import DeleteEntry from '../../models/interfaces/DeleteEntry';
 
 // Create and export DatasetsContext
-export type DatasetsType = {
-    id?: string,
-    _id?: string,
-    date: string,
-    heartData: Data
-};
-const DatasetsContext = React.createContext<DatasetsType[] | null>(null);
+const DatasetsContext = React.createContext<Dataset[] | null>(null);
 export function useDatasets () {
     return useContext(DatasetsContext);
 };
 
 // Create and export BloodSugarUnitContext
-export type BloodSugarUnitType = {
-    bloodSugarUnit: string,
-    handleUnitConversion: (value: keyof UnitsType) => void  
-};
-const BloodSugarUnitContext = React.createContext<BloodSugarUnitType | null>(null);
+const BloodSugarUnitContext = React.createContext<BloodSugarUnit | null>(null);
 export function useBloodSugarUnit () {
     return useContext(BloodSugarUnitContext);
 };
 
 // Create and export UpdateDataTableContext
-export type UpdateDataTableType = {
-    updateEntry: (id: string, date: string, data: Data) => void,
-    updatedId: string,
-    setUpdatedId: React.Dispatch<React.SetStateAction<string>>
-};
-const UpdateDataTableContext = React.createContext<UpdateDataTableType | null>(null);
+const UpdateDataTableContext = React.createContext<UpdateDataTable | null>(null);
 export function useDataTableUpdate () {
     return useContext(UpdateDataTableContext);
 };
 
 // Create and export DeleteEntryContext
-export type DeleteEntryType = {
-    deleteEntry: (id: string) => void,
-    dateToBeDeleted: string,
-    setDateToBeDeleted: React.Dispatch<React.SetStateAction<string>>,
-    idToBeDeleted: string,
-    setIdToBeDeleted: React.Dispatch<React.SetStateAction<string>>,
-    deleteConfirmation: boolean,
-    setDeleteConfirmation: React.Dispatch<React.SetStateAction<boolean>>
-};
-const DeleteEntryContext = React.createContext<DeleteEntryType | null>(null);
+const DeleteEntryContext = React.createContext<DeleteEntry | null>(null);
 export function useEntryDelete () {
     return useContext(DeleteEntryContext);
 };
 
 export default function DatasetsProvider ({ children }: { children: JSX.Element }): JSX.Element {
     const PORT = PORT_5000;
-    const dummy: DatasetsType[] = [
+    const dummy: Dataset[] = [
         {
             id: '-',
             date: '-',
@@ -80,7 +61,7 @@ export default function DatasetsProvider ({ children }: { children: JSX.Element 
     useEffect(() => getData(yearOption), [yearOption]);
     function getData(year: string): void {
         axios.get(`http://localhost:${PORT}/${year}`)
-            .then(data => updateBloodSugarLevel(data.data, 'MMOLL' as keyof UnitsType))
+            .then(data => updateBloodSugarLevel(data.data, 'MMOLL' as keyof Units))
             .catch( err => console.log(err) );
         return;
     };
@@ -106,7 +87,7 @@ export default function DatasetsProvider ({ children }: { children: JSX.Element 
     };
 
     // Convert blood sugar level based on user's choice of unit
-    function handleUnitConversion(value: keyof UnitsType): void {
+    function handleUnitConversion(value: keyof Units): void {
         if (bloodSugarUnit !== UNITS[value]) {
             setBloodSugarUnit(UNITS[value]);
             updateBloodSugarLevel(heartDatasets, value);
@@ -115,7 +96,7 @@ export default function DatasetsProvider ({ children }: { children: JSX.Element 
     };
 
     // Convert and set blood sugar level and unit
-    function updateBloodSugarLevel(datasets: DatasetsType[], newUnit: keyof UnitsType): void {
+    function updateBloodSugarLevel(datasets: Dataset[], newUnit: keyof Units): void {
         const updatedData = datasets.map(set => {
             const bloodSugar = parseFloat(set.heartData.bloodSugar);
             if (!isNaN(bloodSugar) && set.heartData.bloodSugarUnit !== UNITS[newUnit]) {
