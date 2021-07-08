@@ -1,6 +1,6 @@
-import Confirmation from '../../../models/types/Confirmation';
+import ConfirmationProps from '../../../models/types/Confirmation';
 
-export default function Confirmation ({ className, label, content, unit }: Confirmation): JSX.Element {
+export default function Confirmation ({ className, label, content, unit }: ConfirmationProps): JSX.Element {
     return (
         <div className={ className }>
             <p>{ label }</p>

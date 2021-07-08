@@ -8,7 +8,7 @@ import YearOptionProvider from './components/common/yearOptionContext/YearOption
 import DatasetsProvider from './components/dashboard/DatasetsContext';
 import UserInputProvider from './components/homePage/UserInputContext';
 
-function App() {
+function App(): JSX.Element {
   return (
     <Router basename={process.env.PUBLIC_URL}>
         <LanguageProvider>

@@ -5,50 +5,52 @@ import Data from '../../models/types/Data';
 import UNITS, { mmoll_to_mgdl, mgdl_to_mmoll } from '../common/unitOptions/units';
 import Units from '../../models/types/Units';
 import BloodSugarUnit from '../../models/interfaces/BloodSugarUnit';
-import { useYearOption, YearOptionType } from '../common/yearOptionContext/YearOptionContext';
+import { useYearOption } from '../common/yearOptionContext/YearOptionContext';
+import YearOption from '../../models/interfaces/YearOption';
 import Dataset from '../../models/types/Dataset';
 import UpdateDataTable from '../../models/interfaces/UpdateDataTable';
 import DeleteEntry from '../../models/interfaces/DeleteEntry';
 
 // Create and export DatasetsContext
-const DatasetsContext = React.createContext<Dataset[] | null>(null);
+const DatasetsContext = React.createContext<Dataset[] | undefined>(undefined);
 export function useDatasets () {
     return useContext(DatasetsContext);
 };
 
 // Create and export BloodSugarUnitContext
-const BloodSugarUnitContext = React.createContext<BloodSugarUnit | null>(null);
+const BloodSugarUnitContext = React.createContext<BloodSugarUnit | undefined>(undefined);
 export function useBloodSugarUnit () {
     return useContext(BloodSugarUnitContext);
 };
 
 // Create and export UpdateDataTableContext
-const UpdateDataTableContext = React.createContext<UpdateDataTable | null>(null);
+const UpdateDataTableContext = React.createContext<UpdateDataTable | undefined>(undefined);
 export function useDataTableUpdate () {
     return useContext(UpdateDataTableContext);
 };
 
 // Create and export DeleteEntryContext
-const DeleteEntryContext = React.createContext<DeleteEntry | null>(null);
+const DeleteEntryContext = React.createContext<DeleteEntry | undefined>(undefined);
 export function useEntryDelete () {
     return useContext(DeleteEntryContext);
 };
 
-export default function DatasetsProvider ({ children }: { children: JSX.Element }): JSX.Element {
-    const PORT = PORT_5000;
-    const dummy: Dataset[] = [
-        {
-            id: '-',
-            date: '-',
-            heartData: {
-                systolicPressure: '-',
-                diastolicPressure: '-',
-                heartRate: '-',
-                bloodSugar: '-',
-                bloodSugarUnit: 'mmol/L'
-            }
+const PORT = PORT_5000;
+const dummy: Dataset[] = [
+    {
+        id: '-',
+        date: '-',
+        heartData: {
+            systolicPressure: '-',
+            diastolicPressure: '-',
+            heartRate: '-',
+            bloodSugar: '-',
+            bloodSugarUnit: 'mmol/L'
         }
-    ];
+    }
+];
+
+export default function DatasetsProvider ({ children }: { children: JSX.Element }): JSX.Element {
     const [ heartDatasets, setHeartDatasets ] = useState(dummy);
     const [ bloodSugarUnit, setBloodSugarUnit ] = useState('mmol/L');
     const [ dateToBeDeleted, setDateToBeDeleted ] = useState('');
@@ -57,13 +59,12 @@ export default function DatasetsProvider ({ children }: { children: JSX.Element 
     const [ updatedId, setUpdatedId ] = useState('');
     
     // Get year option to display corresponding data
-    const { yearOption } = useYearOption() as YearOptionType;
+    const { yearOption } = useYearOption() as YearOption;
     useEffect(() => getData(yearOption), [yearOption]);
     function getData(year: string): void {
         axios.get(`http://localhost:${PORT}/${year}`)
             .then(data => updateBloodSugarLevel(data.data, 'MMOLL' as keyof Units))
             .catch( err => console.log(err) );
-        return;
     };
     
     // Delete data entry with the identified id
@@ -71,7 +72,6 @@ export default function DatasetsProvider ({ children }: { children: JSX.Element 
         axios.delete(`http://localhost:${PORT}/?id=${id}`)
             .then(data => setHeartDatasets(heartDatasets.filter(set => set.id !== data.data.id)))
             .catch(err => console.log(err));
-        return;
     };
 
     // Update identified data entry with new data
@@ -83,7 +83,6 @@ export default function DatasetsProvider ({ children }: { children: JSX.Element 
         axios.post(`http://localhost:${PORT}/update/${id}`, updatedDoc)
             .then(data => setHeartDatasets([...heartDatasets, data.data].filter(set => set.id !== id)))
             .catch(err => console.log(err));
-        return;
     };
 
     // Convert blood sugar level based on user's choice of unit
@@ -92,7 +91,6 @@ export default function DatasetsProvider ({ children }: { children: JSX.Element 
             setBloodSugarUnit(UNITS[value]);
             updateBloodSugarLevel(heartDatasets, value);
         };
-        return;
     };
 
     // Convert and set blood sugar level and unit
@@ -109,7 +107,6 @@ export default function DatasetsProvider ({ children }: { children: JSX.Element 
             return set;
         });
         setHeartDatasets(updatedData);
-        return;
     };
 
     return (

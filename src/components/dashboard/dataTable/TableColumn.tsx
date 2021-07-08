@@ -28,7 +28,7 @@ export default function TableColumn ({ heading }: { heading: keyof Data | string
     // };
 
     return (
-        <Fragment>
+        <>
             {
                 heartDatasets.map( (set, index) => {
                     const ID = set.id ? set.id : set._id + '';
@@ -38,10 +38,10 @@ export default function TableColumn ({ heading }: { heading: keyof Data | string
                                 { 
                                     heading
                                     ?   heading === 'date'
-                                        ?   <Fragment>
+                                        ?   <>
                                                 <span className="date">{ set.date.slice(0, 10) }</span>
                                                 <span className="date bold">{ set.date.slice(11) }</span>
-                                            </Fragment>
+                                            </>
                                         :   heading === 'bloodSugarLevel'
                                         ?   set.heartData.bloodSugar && set.heartData.bloodSugar !== '0'
                                             ?   addDecimalPlace(parseFloat(set.heartData.bloodSugar))
@@ -49,25 +49,35 @@ export default function TableColumn ({ heading }: { heading: keyof Data | string
                                         :   set.heartData[heading as keyof Data] && set.heartData[heading as keyof Data] !== '0'
                                             ?   set.heartData[heading as keyof Data]
                                             :   '-'
-                                    :   <Fragment>
-                                            <Link to="/dashboard" onClick={() => {
-                                                setUpdatedId(ID);
-                                                updateEntry(ID, '2021-02-14T05:40', set.heartData);
-                                            }}>{ language.update }</Link> | 
-                                            <Link to="/dashboard" onClick={event => {
-                                                const position: number = (event.target as HTMLElement).offsetTop;
-                                                const date: string = getDateToBeDeleted(position, dateEntries, language.timeAt);
-                                                setDateToBeDeleted(date);
-                                                setIdToBeDeleted(ID);
-                                                setDeleteConfirmation(true);
-                                            }}>{ language.delete }</Link>
-                                        </Fragment>
+                                    :   <>
+                                            <Link 
+                                                to="/dashboard" 
+                                                onClick={ 
+                                                    () => {
+                                                        setUpdatedId(ID);
+                                                        updateEntry(ID, '2021-02-14T05:40', set.heartData);
+                                                    }
+                                                }
+                                            >{ language.update }</Link> | 
+                                            <Link 
+                                                to="/dashboard" 
+                                                onClick={ 
+                                                    event => {
+                                                        const position: number = (event.target as HTMLElement).offsetTop;
+                                                        const date: string = getDateToBeDeleted(position, dateEntries, language.timeAt);
+                                                        setDateToBeDeleted(date);
+                                                        setIdToBeDeleted(ID);
+                                                        setDeleteConfirmation(true);
+                                                    }
+                                                }
+                                            >{ language.delete }</Link>
+                                        </>
                                 }
                             </li>
                         :   <Fragment key={`hidden_${index}`}></Fragment>
                     );
                 })
             }
-        </Fragment>
+        </>
     );
 };

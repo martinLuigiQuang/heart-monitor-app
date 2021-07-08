@@ -4,7 +4,7 @@ import Language from '../../../models/types/Language';
 import LanguageInterface from '../../../models/interfaces/Language';
 
 // Create and export the Language Context
-const LanguageContext = React.createContext<LanguageInterface | null>(null);
+const LanguageContext = React.createContext<LanguageInterface | undefined>(undefined);
 export function useLanguage () {
     return useContext(LanguageContext);
 };

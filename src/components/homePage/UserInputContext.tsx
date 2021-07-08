@@ -20,17 +20,18 @@ export function useInputVerification () {
     return useContext(InputVerificationContext);
 };
 
-export default function UserInputProvider ({ children }: { children: JSX.Element }): JSX.Element {
-    const dummy: HeartData = {
-        date: getCurrentDate(),
-        heartData: {
-            systolicPressure: '',
-            diastolicPressure: '',
-            heartRate: '',
-            bloodSugar: '',
-            bloodSugarUnit: 'mmol/L'
-        }
+const dummy: HeartData = {
+    date: getCurrentDate(),
+    heartData: {
+        systolicPressure: '',
+        diastolicPressure: '',
+        heartRate: '',
+        bloodSugar: '',
+        bloodSugarUnit: 'mmol/L'
     }
+};
+
+export default function UserInputProvider ({ children }: { children: JSX.Element }): JSX.Element {
     const [inputConfirmation, setInputConfirmation] = useState(false);
     const [heartData, setHeartData] = useState(dummy);
     

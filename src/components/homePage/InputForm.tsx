@@ -2,20 +2,21 @@ import Input from '../common/input/Input';
 import UnitOptions from '../common/unitOptions/UnitOptions';
 import Button from '../common/button/Button';
 import { useLanguage } from '../common/languageContext/LanguageContext';
-import Language from '../../models/interfaces/Language';
 import { useInput } from './UserInputContext';
 import UNITS from '../common/unitOptions/units';
 import Units from '../../models/types/Units';
 import { convertUnits } from './utils';
 
-export default function InputForm () {
-    const { language } = useLanguage() as Language;
+export default function InputForm (): JSX.Element | null {
+    const languageObj = useLanguage();
     const inputs = useInput();
-    if (inputs) {
+
+    if (inputs && languageObj) {
+        const { language } = languageObj;
         const { getInput, heartData, handleInputChange, handleUnitConversion } = inputs
+
         return (
             <form className="dataInput wrapper" onSubmit={ getInput }>
-    
                 <Input
                     className="input--date" label={ language.date + ':' }
                     type="datetime-local" 
@@ -59,9 +60,9 @@ export default function InputForm () {
                 />
     
                 <Button ariaLabel="submit heart data" label={ language.buttonSubmit } />
-    
             </form>
         );
     };
+
     return null;
 };

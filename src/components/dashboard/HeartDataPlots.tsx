@@ -1,22 +1,23 @@
-import { Fragment } from 'react';
 import { usePlotWidth } from './utils';
 import Data from '../../models/types/Data';
 import { useLanguage } from '../common/languageContext/LanguageContext';
-import Language from '../../models/interfaces/Language';
 import { useDatasets } from './DatasetsContext';
 import Dataset from '../../models/types/Dataset';
 import PlotlyChart from 'react-plotlyjs-ts';
 
-export default function HeartDataPlots (): JSX.Element {
-    const { language } = useLanguage() as Language;
-    const heartDatasets = useDatasets() as Dataset[];
+export default function HeartDataPlots (): JSX.Element | null {
+    const languageObj = useLanguage();
+    const heartDatasets = useDatasets();
     const plotWidth = usePlotWidth();
 
     function checkDataExistence(set: Dataset, key: keyof Data): boolean {
         return set.heartData[key] !== undefined && set.heartData[key] !== null && set.heartData[key] !== '0';
     };
 
-    if (heartDatasets.length) {
+    if (languageObj && heartDatasets && heartDatasets.length) {
+
+        const { language } = languageObj;
+
         const systolicPressure = {
             x: heartDatasets.filter(set => checkDataExistence(set, 'systolicPressure')).map(set => new Date(set.date)),
             y: heartDatasets.filter(set => checkDataExistence(set, 'systolicPressure')).map(set => set.heartData.systolicPressure),
@@ -95,7 +96,7 @@ export default function HeartDataPlots (): JSX.Element {
                 layout={ layout }
             />
         );
-    } else {
-        return <Fragment></Fragment>;
     };
+    
+    return null;
 };
